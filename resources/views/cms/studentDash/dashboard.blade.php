@@ -33,7 +33,7 @@
             width: 280px;
             background: rgba(10, 14, 23, 0.95);
             backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(0, 255, 255, 0.2);
+            border-right: 1px solid rgba(168, 85, 247, 0.2);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
@@ -42,11 +42,11 @@
         .sidebar-header {
             padding: 30px 20px;
             text-align: center;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
         }
 
         .sidebar-header h2 {
-            color: #00ffcc;
+            color: #bd5fff;
             font-size: 1.5rem;
         }
 
@@ -73,8 +73,8 @@
         }
 
         .nav-item:hover, .nav-item.active {
-            background: rgba(0, 255, 204, 0.1);
-            color: #00ffcc;
+            background: rgba(189, 95, 255, 0.1);
+            color: #bd5fff;
         }
 
         .nav-item i {
@@ -92,7 +92,7 @@
         /* Header */
         .top-header {
             background: linear-gradient(135deg, #0a0c10, #0d1117);
-            border: 1px solid rgba(0, 255, 204, 0.3);
+            border: 1px solid rgba(189, 95, 255, 0.3);
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 30px;
@@ -100,7 +100,7 @@
 
         .welcome-text h1 {
             font-size: 1.8rem;
-            color: #00ffcc;
+            color: #bd5fff;
         }
 
         .welcome-text p {
@@ -118,7 +118,7 @@
 
         .stat-card {
             background: rgba(20, 25, 40, 0.8);
-            border: 1px solid rgba(0, 255, 204, 0.2);
+            border: 1px solid rgba(189, 95, 255, 0.2);
             border-radius: 16px;
             padding: 20px;
             display: flex;
@@ -129,24 +129,24 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: #00ffcc;
+            border-color: #bd5fff;
         }
 
         .stat-icon {
             width: 55px;
             height: 55px;
-            background: rgba(0, 255, 204, 0.1);
+            background: rgba(189, 95, 255, 0.1);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.6rem;
-            color: #00ffcc;
+            color: #bd5fff;
         }
 
         .stat-info h3 {
             font-size: 1.8rem;
-            color: #00ffcc;
+            color: #bd5fff;
         }
 
         .stat-info p {
@@ -161,7 +161,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #00ffcc;
+            color: #bd5fff;
         }
 
         /* Courses Grid */
@@ -174,7 +174,7 @@
 
         .course-card {
             background: rgba(20, 25, 40, 0.8);
-            border: 1px solid rgba(0, 255, 204, 0.2);
+            border: 1px solid rgba(189, 95, 255, 0.2);
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s;
@@ -182,16 +182,16 @@
 
         .course-card:hover {
             transform: translateY(-5px);
-            border-color: #00ffcc;
+            border-color: #bd5fff;
         }
 
         .course-header {
             padding: 20px;
-            background: linear-gradient(135deg, rgba(0, 255, 204, 0.1), transparent);
+            background: linear-gradient(135deg, rgba(189, 95, 255, 0.1), transparent);
         }
 
         .course-header h3 {
-            color: #00ffcc;
+            color: #bd5fff;
             margin-bottom: 5px;
         }
 
@@ -223,7 +223,7 @@
         }
 
         .progress-bar-fill {
-            background: linear-gradient(90deg, #00ffcc, #00cc88);
+            background: linear-gradient(90deg, #bd5fff, #e11d48);
             height: 100%;
             width: 0%;
             border-radius: 10px;
@@ -249,23 +249,23 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00cc88, #009966);
+            background: linear-gradient(135deg, #bd5fff, #8b5cf6);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(0, 204, 136, 0.5);
+            box-shadow: 0 0 15px rgba(189, 95, 255, 0.5);
         }
 
         .btn-outline {
             background: transparent;
-            border: 1px solid #00ffcc;
-            color: #00ffcc;
+            border: 1px solid #bd5fff;
+            color: #bd5fff;
         }
 
         .btn-outline:hover {
-            background: rgba(0, 255, 204, 0.1);
+            background: rgba(189, 95, 255, 0.1);
         }
 
         .btn-warning {
@@ -340,7 +340,7 @@
             padding: 30px;
             max-width: 400px;
             width: 90%;
-            border: 1px solid rgba(0, 255, 204, 0.3);
+            border: 1px solid rgba(189, 95, 255, 0.3);
             text-align: center;
         }
 
@@ -374,11 +374,8 @@
 
     <div class="dashboard-container">
 
-
         <main class="main-content">
 
-
-            <!-- Stats Cards -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">
@@ -409,7 +406,6 @@
                 </div>
             </div>
 
-            <!-- My Courses Section -->
             <div class="section-title">
                 <i class="fas fa-book"></i>
                 <h2>كورساتي المسجل فيها</h2>
@@ -441,8 +437,8 @@
                                 </div>
 
                                <a href="{{ route('course.player', $course->id) }}" class="btn btn-primary">
-    <i class="fas fa-play-circle"></i> متابعة الكورس
-</a>
+                                    <i class="fas fa-play-circle"></i> متابعة الكورس
+                                </a>
                             </div>
                         </div>
                     @endforeach
@@ -454,12 +450,6 @@
                 </div>
             @endif
 
-
-
-
-
-
-            <!-- All Courses Section -->
             <div class="section-title">
                 <i class="fas fa-globe"></i>
                 <h2>جميع الكورسات المتاحة</h2>
@@ -495,7 +485,6 @@
                 @endforeach
             </div>
 
-            <!-- Recent Certificates -->
             @if($certificates->count() > 0)
                 <div class="section-title">
                     <i class="fas fa-certificate"></i>
@@ -506,7 +495,6 @@
                         <div class="certificate-item">
                             <div class="certificate-info">
                                 <h4>{{ $cert->course->name }}</h4>
-                                {{-- <p>تاريخ الإصدار: {{ $cert->issued_date->format('Y-m-d') }}</p> --}}
                             </div>
                             <a href="{{ route('certificate.show', $cert->id) }}" class="btn btn-warning" style="padding: 8px 15px;">
                                 <i class="fas fa-eye"></i>
@@ -518,10 +506,9 @@
         </main>
     </div>
 
-    <!-- Modal للتسجيل -->
     <div id="enrollModal" class="modal">
         <div class="modal-content">
-            <h3 style="color: #00ffcc; margin-bottom: 15px;">تسجيل في الكورس</h3>
+            <h3 style="color: #bd5fff; margin-bottom: 15px;">تسجيل في الكورس</h3>
             <p>هل أنت متأكد من رغبتك في التسجيل في كورس <strong id="courseName"></strong>؟</p>
             <form id="enrollForm" method="POST" action="{{ route('student.enroll') }}">
                 @csrf

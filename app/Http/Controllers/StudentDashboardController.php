@@ -8,6 +8,7 @@ use App\Models\User1;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class StudentDashboardController extends Controller
 {
@@ -132,4 +133,66 @@ class StudentDashboardController extends Controller
 
         return redirect('/cms/studentDash/dashboard');
     }
+    /**
+ * صفحة CTF للطالب
+ */
+
+/**
+ * عرض صفحة CTF
+ */
+public function ctf()
+{
+    $challenges = [
+        ['id' => 1, 'title' => 'شفرة القيصر', 'points' => 50],
+        ['id' => 2, 'title' => 'أسرار المطور', 'points' => 70],
+        ['id' => 3, 'title' => 'هجوم النص الواضح', 'points' => 100],
+    ];
+    
+    return view('cms.student.ctf', compact('challenges'));
+}
+
+/**
+ * التحقق من صحة الفلاج
+ */
+/**
+ * التحقق من صحة الفلاج
+ */
+public function submitFlag(Request $request)
+{
+    // للتجربة - شوف إذا كان الطلب يوصل
+    \Log::info('CTF Request:', [
+        'challenge_id' => $request->challenge_id,
+        'flag' => $request->flag
+    ]);
+    
+    $challengeId = $request->challenge_id;
+    $submittedFlag = $request->flag;
+    
+    // الأعلام الصحيحة لكل تحدي
+    $correctFlags = [
+        1 => 'CyberEye{Cry_v1_ph3re}',
+        2 => 'CyberEye{1nsp3ct_3l3m3nt_iS_c00l}',
+        3 => 'CyberEye{admin_SuP3r_S3cur3_P4ss}',
+    ];
+    
+    // التحقق من صحة الفلاج
+    if (isset($correctFlags[$challengeId])) {
+        if ($submittedFlag === $correctFlags[$challengeId]) {
+            return response()->json([
+                'correct' => true,
+                'message' => '🎉 تهانينا! الفلاج صحيح. لقد حصلت على النقاط!'
+            ]);
+        } else {
+            return response()->json([
+                'correct' => false,
+                'message' => '❌ الفلاج غير صحيح. حاول مرة أخرى!'
+            ]);
+        }
+    }
+    
+    return response()->json([
+        'correct' => false,
+        'message' => '⚠️ التحدي غير موجود'
+    ]);
+}
 }

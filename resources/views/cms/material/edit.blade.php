@@ -4,27 +4,28 @@
 
 @section('styles')
 <style>
-    .edit-page-container { width: 100%; padding: 40px; background-color: #0b0f19; min-height: 100vh; direction: rtl; box-sizing: border-box; }
-    .admin-main { background-color: #0b0f19 !important; }
-    .cyber-form-card { background: #111827; border: 1px solid #1f2937; border-radius: 20px; padding: 50px; max-width: 900px; margin: 0 auto; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); }
-    .form-header-title { color: #3b82f6; font-size: 26px; font-weight: 800; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
+    .edit-page-container { width: 100%; padding: 40px; background-color: #0f0a1a; min-height: 100vh; direction: rtl; box-sizing: border-box; }
+    .admin-main { background-color: #0f0a1a !important; }
+    .cyber-form-card { background: #0d0818; border: 1px solid #2a1a3a; border-radius: 20px; padding: 50px; max-width: 900px; margin: 0 auto; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); }
+    .form-header-title { color: #9b59b6; font-size: 26px; font-weight: 800; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
     .form-cyber-label { color: #f3f4f6; font-weight: 700; margin-bottom: 12px; display: block; }
 
     .form-cyber-control {
-        background: #0b0f19 !important;
-        border: 2px solid #1f2937 !important;
-        color: #ffffff !important;
+        background: #06040a !important;
+        border: 2px solid #2a1a3a !important;
+        color: #d1c4e0 !important;
         border-radius: 12px;
         padding: 18px;
         width: 100%;
     }
 
-    .current-file-box { background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; padding: 15px; border-radius: 12px; color: #3b82f6; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+    .current-file-box { background: rgba(155, 89, 182, 0.1); border: 1px solid #9b59b6; padding: 15px; border-radius: 12px; color: #9b59b6; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
 
-    .action-footer { display: flex; gap: 20px; margin-top: 45px; border-top: 1px solid #1f2937; padding-top: 30px; }
-    .btn-update-cyber { background: linear-gradient(90deg, #3b82f6, #2563eb) !important; color: white !important; border: none; flex: 2; padding: 18px; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-    .btn-update-cyber:hover { opacity: 0.9; transform: translateY(-2px); }
-    .btn-back-cyber { background: #1f2937 !important; color: #9ca3af !important; flex: 1; padding: 18px; border-radius: 12px; text-align: center; text-decoration: none; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .action-footer { display: flex; gap: 20px; margin-top: 45px; border-top: 1px solid #2a1a3a; padding-top: 30px; }
+    .btn-update-cyber { background: linear-gradient(90deg, #9b59b6, #bf77f0) !important; color: white !important; border: none; flex: 2; padding: 18px; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+    .btn-update-cyber:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(155, 89, 182, 0.3); }
+    .btn-back-cyber { background: #2a1a3a !important; color: #8a7a9c !important; flex: 1; padding: 18px; border-radius: 12px; text-align: center; text-decoration: none; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .btn-back-cyber:hover { background: #3a2a4a !important; color: #d1c4e0 !important; }
 </style>
 @endsection
 
@@ -79,7 +80,6 @@
         }
 
         let formData = new FormData();
-        // في Laravel، عند استخدام PUT مع ملفات، نرسل الطلب كـ POST ونضع _method = PUT
         formData.append('_method', 'PUT');
         formData.append('title', title);
         formData.append('description', description);
@@ -98,8 +98,8 @@
                 icon: 'success',
                 title: 'تم التحديث!',
                 text: 'تم تعديل بيانات المادة بنجاح',
-                background: '#111827',
-                color: '#fff',
+                background: '#0d0818',
+                color: '#d1c4e0',
                 showConfirmButton: false,
                 timer: 1500
             }).then(() => {
@@ -111,8 +111,9 @@
                 icon: 'error',
                 title: 'فشل التحديث',
                 text: error.response?.data?.message || 'حدث خطأ أثناء حفظ التعديلات، تأكد من حجم الملف',
-                background: '#111827',
-                color: '#fff'
+                background: '#0d0818',
+                color: '#d1c4e0',
+                confirmButtonColor: '#9b59b6'
             });
         });
     }
@@ -122,9 +123,9 @@
             icon: 'warning',
             title: 'تنبيه',
             text: msg,
-            background: '#111827',
-            color: '#fff',
-            confirmButtonColor: '#3b82f6'
+            background: '#0d0818',
+            color: '#d1c4e0',
+            confirmButtonColor: '#9b59b6'
         });
     }
 </script>

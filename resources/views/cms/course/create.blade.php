@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    /* الحاوية الأساسية - Deep Teal (جنزاري غامق) */
+    /* الحاوية الأساسية */
     .dashboard-wrapper {
         display: flex;
         gap: 25px;
@@ -27,19 +27,19 @@
 
     /* صندوق رفع الصورة */
     .image-upload-wrapper {
-        background: #0a1b1e;
+        background: #0f0a1e;
         border-radius: 20px;
         padding: 15px;
         box-shadow: 0 8px 30px rgba(0,0,0,0.4);
         cursor: pointer;
         transition: 0.3s;
-        border: 1px solid #14353a;
+        border: 1px solid #2a1a3a;
         text-align: center;
     }
 
     .image-upload-wrapper:hover {
-        border-color: #1abc9c;
-        background: #0d2529;
+        border-color: #9b59b6;
+        background: #140a25;
     }
 
     .upload-box {
@@ -55,13 +55,13 @@
 
     .upload-box i {
         font-size: 3rem;
-        color: #1abc9c;
+        color: #9b59b6;
         margin-bottom: 15px;
     }
 
     .upload-box p {
         font-size: 0.9rem;
-        color: #5c7c80;
+        color: #7a6b8c;
         margin: 0;
     }
 
@@ -78,17 +78,17 @@
 
     /* القائمة الجانبية */
     .side-menu-list {
-        background: #0a1b1e;
+        background: #0f0a1e;
         border-radius: 20px;
         padding: 15px;
-        border: 1px solid #14353a;
+        border: 1px solid #2a1a3a;
     }
 
     .menu-item {
         display: flex;
         align-items: center;
         padding: 12px 15px;
-        color: #7da0a5;
+        color: #8a7a9c;
         text-decoration: none;
         border-radius: 12px;
         margin-bottom: 8px;
@@ -96,28 +96,28 @@
         font-weight: 600;
     }
 
-    .menu-item i { margin-left: 12px; color: #1abc9c; }
+    .menu-item i { margin-left: 12px; color: #9b59b6; }
 
     .menu-item:hover {
         padding-right: 25px;
-        background: rgba(26, 188, 156, 0.05);
-        color: #1abc9c;
+        background: rgba(155, 89, 182, 0.05);
+        color: #9b59b6;
     }
 
     .menu-item.active {
-        background: #14353a;
-        color: #1abc9c;
-        border-right: 4px solid #1abc9c;
+        background: #2a1a3a;
+        color: #9b59b6;
+        border-right: 4px solid #9b59b6;
     }
 
     /* منطقة الفورم */
     .main-form-content {
         flex: 1;
-        background: #0a1b1e;
+        background: #0f0a1e;
         border-radius: 25px;
         padding: 40px;
         box-shadow: 0 10px 50px rgba(0,0,0,0.5);
-        border: 1px solid #14353a;
+        border: 1px solid #2a1a3a;
     }
 
     .form-subtitle {
@@ -128,7 +128,7 @@
         align-items: center;
         gap: 15px;
         font-size: 1.5rem;
-        border-right: 5px solid #1abc9c;
+        border-right: 5px solid #9b59b6;
         padding-right: 15px;
     }
 
@@ -137,31 +137,31 @@
 
     label {
         font-weight: 700;
-        color: #7da0a5;
+        color: #8a7a9c;
         font-size: 0.95rem;
     }
 
     input, select, textarea {
         border-radius: 12px !important;
         padding: 15px !important;
-        border: 1px solid #14353a !important;
-        background: #071214 !important;
-        color: #d1e2e4 !important;
+        border: 1px solid #2a1a3a !important;
+        background: #080412 !important;
+        color: #d1c4e0 !important;
         font-size: 0.95rem;
         transition: 0.3s;
     }
 
     input:focus, select:focus {
-        border-color: #1abc9c !important;
-        box-shadow: 0 0 8px rgba(26, 188, 156, 0.2) !important;
+        border-color: #9b59b6 !important;
+        box-shadow: 0 0 8px rgba(155, 89, 182, 0.2) !important;
         outline: none;
     }
 
     /* زر الحفظ التفاعلي */
     .btn-save {
-        background: linear-gradient(135deg, #14353a 0%, #0d2529 100%);
-        color: #1abc9c;
-        border: 1px solid #1abc9c;
+        background: linear-gradient(135deg, #2a1a3a 0%, #1a0a2a 100%);
+        color: #9b59b6;
+        border: 1px solid #9b59b6;
         padding: 16px 50px;
         border-radius: 15px;
         font-weight: 800;
@@ -175,25 +175,25 @@
 
     .btn-save:hover {
         transform: translateY(-2px);
-        background: #1abc9c;
-        color: #0a1b1e;
-        box-shadow: 0 5px 20px rgba(26, 188, 156, 0.3);
+        background: #9b59b6;
+        color: #0f0a1e;
+        box-shadow: 0 5px 20px rgba(155, 89, 182, 0.3);
     }
 
     .btn-save:active {
         transform: scale(0.95);
-        background: #00d4ff !important;
+        background: #bf77f0 !important;
         color: white !important;
-        border-color: #00d4ff !important;
-        box-shadow: 0 0 40px #00d4ff, 0 0 70px rgba(0, 212, 255, 0.5);
+        border-color: #bf77f0 !important;
+        box-shadow: 0 0 40px #bf77f0, 0 0 70px rgba(191, 119, 240, 0.5);
     }
 
-    option { background: #0a1b1e; color: #d1e2e4; }
+    option { background: #0f0a1e; color: #d1c4e0; }
 
     /* تنسيق السكرول بار */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #050a0f; }
-    ::-webkit-scrollbar-thumb { background: #14353a; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #2a1a3a; border-radius: 10px; }
 </style>
 @endsection
 
@@ -329,7 +329,6 @@
         formData.append('status', document.getElementById('status').value);
         formData.append('start_date', '{{ date("Y-m-d") }}');
 
-        // جلب instructor_id (سواء من select أو من hidden input)
         let instructorIdElement = document.getElementById('instructor_id');
         if (instructorIdElement) {
             formData.append('instructor_id', instructorIdElement.value);
@@ -340,7 +339,6 @@
             formData.append('course_image', imageFile);
         }
 
-        // استدعاء دالة store من ملف crud.js (افتراض أنها موجودة)
         store('{{ route("courses.store") }}', formData);
     }
 </script>

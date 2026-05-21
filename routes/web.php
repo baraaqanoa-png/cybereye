@@ -66,7 +66,9 @@ Route::middleware(['auth:student'])->prefix('cms/student')->group(function () {
         return view('cms.student.dashboard');
     })->name('student.dashboard');
     Route::get('/dashboard', [AdminController::class, 'main'])->name('student.dashboard');
-
+    Route::get('/ctf', [StudentDashboardController::class, 'ctf'])->name('student.ctf');
+    Route::post('/ctf/submit', [StudentDashboardController::class, 'submitFlag'])->name('ctf.submit');
+    
     Route::get('/my-courses', [StudentController::class, 'myCourses'])->name('student.my-courses');
     Route::get('/my-certificates', [StudentController::class, 'myCertificates'])->name('student.my-certificates');
 });

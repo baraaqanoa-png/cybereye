@@ -6,17 +6,17 @@
 <style>
     /* 1. القاعدة الأساسية: تعتيم شامل وإلغاء أي بياض */
     body, .admin-main, .content-wrapper, .main-panel, .container-fluid {
-        background-color: #0f172a !important;
-        color: #e2e8f0 !important;
+        background-color: #0f0a1a !important;
+        color: #d1c4e0 !important;
         border: none !important;
         font-family: 'Segoe UI', sans-serif;
     }
 
     /* 2. حاوية التفاصيل (الكارد الأساسي) */
     .form-container {
-        background-color: #111827 !important;
-        border: 1px solid #1e293b !important;
-        border-radius: 2px !important; /* زوايا حادة */
+        background-color: #0d0818 !important;
+        border: 1px solid #2a1a3a !important;
+        border-radius: 2px !important;
         padding: 30px;
         box-shadow: none !important;
         max-width: 900px;
@@ -34,11 +34,15 @@
         gap: 10px;
     }
 
+    .form-title i {
+        color: #9b59b6 !important;
+    }
+
     .form-subtitle {
-        color: #38bdf8 !important; /* لون سماوي هادئ للعناوين الفرعية */
+        color: #9b59b6 !important;
         font-size: 1rem;
         margin: 20px 0 15px 0;
-        border-right: 3px solid #3b82f6;
+        border-right: 3px solid #9b59b6;
         padding-right: 10px;
     }
 
@@ -56,16 +60,16 @@
 
     /* 5. الحقول المعطلة (Disabled) - شكل احترافي */
     label {
-        color: #94a3b8 !important;
+        color: #8a7a9c !important;
         font-size: 0.85rem;
         margin-bottom: 8px;
         display: block;
     }
 
     input[disabled], textarea[disabled] {
-        background-color: #1f2937 !important;
-        color: #94dfeb !important;
-        border: 1px solid #374151 !important;
+        background-color: #06040a !important;
+        color: #d1c4e0 !important;
+        border: 1px solid #2a1a3a !important;
         border-radius: 2px !important;
         padding: 12px;
         width: 100%;
@@ -76,17 +80,17 @@
     .course-image-display {
         width: 100%;
         max-width: 300px;
-        border: 1px solid #374151 !important;
-        border-radius: 2px !important; /* زوايا حادة */
+        border: 1px solid #2a1a3a !important;
+        border-radius: 2px !important;
         padding: 5px;
-        background: #1e2937;
+        background: #0d0818;
         margin: 0 auto 20px auto;
         display: block;
     }
 
     /* 7. الحالة (Badge) */
     .status-badge {
-        background: #1e40af !important;
+        background: #9b59b6 !important;
         color: white !important;
         padding: 6px 15px;
         border-radius: 2px !important;
@@ -99,7 +103,7 @@
         display: flex;
         gap: 10px;
         margin-top: 30px;
-        border-top: 1px solid #1e293b;
+        border-top: 1px solid #2a1a3a;
         padding-top: 20px;
     }
 
@@ -115,8 +119,10 @@
         text-decoration: none;
     }
 
-    .btn-primary { background-color: #2563eb !important; color: white; }
-    .btn-secondary { background-color: #4b5563 !important; color: white; }
+    .btn-primary { background-color: #9b59b6 !important; color: white; }
+    .btn-primary:hover { background-color: #bf77f0 !important; transform: translateY(-2px); transition: 0.3s; }
+    .btn-secondary { background-color: #2a1a3a !important; color: #8a7a9c; }
+    .btn-secondary:hover { background-color: #3a2a4a !important; color: #d1c4e0; }
 
     /* تنظيف القالب */
     hr, .card-header, .border-top, .border-bottom {

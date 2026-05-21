@@ -220,5 +220,5 @@
 @endsection
 
 @section('scripts')
-{{-- <script src="{{ asset('cms/js/contact.js') }}"></script> --}}
+<script src="{{ asset('cms/js/contact.js') }}"></script>
 @endsection

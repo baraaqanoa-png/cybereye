@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>شهادة تقدير - CYBEReye</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
@@ -20,27 +20,28 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 40px;
+            padding: 20px;
         }
 
         .certificate-wrapper {
             max-width: 950px;
             width: 100%;
             background: #fdf8e7;
-            padding: 45px 55px;
+            padding: 30px 25px;
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
             position: relative;
             border: 1px solid #d4c9a6;
+            margin: 0 auto;
         }
 
         /* إطار ذهبي كلاسيكي */
         .certificate-wrapper::before {
             content: '';
             position: absolute;
-            top: 12px;
-            left: 12px;
-            right: 12px;
-            bottom: 12px;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
             border: 2px solid #c9a53b;
             pointer-events: none;
         }
@@ -48,64 +49,64 @@
         /* زوايا مزخرفة */
         .corner-decoration {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             border-color: #c9a53b;
             border-style: solid;
             border-width: 0;
         }
 
         .corner-tl {
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            left: 15px;
             border-top-width: 3px;
             border-left-width: 3px;
         }
 
         .corner-tr {
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             border-top-width: 3px;
             border-right-width: 3px;
         }
 
         .corner-bl {
-            bottom: 20px;
-            left: 20px;
+            bottom: 15px;
+            left: 15px;
             border-bottom-width: 3px;
             border-left-width: 3px;
         }
 
         .corner-br {
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             border-bottom-width: 3px;
             border-right-width: 3px;
         }
 
         .certificate-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .header-title {
-            font-size: 14px;
-            letter-spacing: 4px;
+            font-size: 12px;
+            letter-spacing: 3px;
             color: #8b7a4b;
             font-weight: 500;
             margin-bottom: 5px;
         }
 
         .certificate-title {
-            font-size: 42px;
+            font-size: 32px;
             font-weight: 800;
             color: #2c2b26;
             letter-spacing: 3px;
-            margin: 10px 0;
+            margin: 8px 0;
         }
 
         .certificate-subtitle {
-            font-size: 13px;
+            font-size: 11px;
             color: #6b5a3a;
             letter-spacing: 2px;
             border-bottom: 1px solid #d4c9a6;
@@ -114,38 +115,40 @@
         }
 
         .award-text {
-            font-size: 16px;
+            font-size: 14px;
             color: #3a3524;
-            margin: 30px 0 15px;
-            line-height: 1.8;
+            margin: 20px 0 10px;
+            line-height: 1.6;
             text-align: center;
         }
 
         .student-section {
             text-align: center;
-            margin: 15px 0;
+            margin: 10px 0;
         }
 
         .student-name {
-            font-size: 38px;
+            font-size: 28px;
             font-weight: 700;
             color: #1e3a2f;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             font-family: 'Times New Roman', serif;
             border-bottom: 1px dashed #c9a53b;
             display: inline-block;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
+            word-break: break-word;
+            max-width: 100%;
         }
 
         .course-section {
             text-align: center;
-            margin: 25px 0 15px;
+            margin: 20px 0 10px;
         }
 
         .course-label {
-            font-size: 15px;
+            font-size: 13px;
             color: #5e5538;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             letter-spacing: 1px;
         }
 
@@ -153,70 +156,71 @@
             display: inline-block;
             background: linear-gradient(135deg, #1e3a2f 0%, #2c5a4a 100%);
             color: #fdf8e7;
-            padding: 12px 35px;
-            border-radius: 50px;
-            font-size: 22px;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 16px;
             font-weight: 700;
             letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             border: 1px solid #c9a53b;
+            word-break: break-word;
+            max-width: 100%;
         }
 
         .completion-text {
-            font-size: 15px;
+            font-size: 13px;
             color: #4a4532;
-            margin: 20px 0 5px;
-            line-height: 1.7;
+            margin: 15px 0 5px;
+            line-height: 1.6;
             text-align: center;
+            padding: 0 10px;
         }
 
         .gratitude-text {
-            font-size: 14px;
+            font-size: 12px;
             color: #7a6b42;
-            margin: 20px 0 10px;
+            margin: 15px 0 10px;
             font-style: italic;
             font-weight: 500;
             text-align: center;
+            padding: 0 10px;
         }
 
         .signatures {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin: 40px 0 25px;
+            gap: 15px;
+            margin: 30px 0 20px;
             text-align: center;
+            flex-wrap: wrap;
         }
 
         .signature-item {
             flex: 1;
+            min-width: 120px;
         }
 
         .signature-line {
             font-family: 'Dancing Script', cursive;
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 500;
             color: #2c3e2f;
             margin-bottom: 8px;
             border-bottom: 1px solid #c9a53b;
             display: inline-block;
             padding-bottom: 5px;
-            min-width: 160px;
+            min-width: 120px;
+            word-break: keep-all;
         }
 
         .signature-title {
             color: #7a6b42;
-            font-size: 12px;
+            font-size: 10px;
             letter-spacing: 1px;
         }
 
-        .badge-text {
-            font-size: 11px;
-            color: #c9a53b;
-            margin-top: 8px;
-            font-weight: bold;
-        }
-
-        /* ========== الختم السيبراني المحسن ========== */
+        /* الختم السيبراني */
         .stamp-container {
             display: flex;
             justify-content: center;
@@ -224,24 +228,19 @@
             flex-direction: column;
         }
 
-        /* الختم السيبراني الدائري */
         .cyber-stamp {
-            width: 95px;
-            height: 95px;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
             background: linear-gradient(145deg, #0a0f1a, #06090f);
-            /* border: 2px solid #00ffcc; */
-            /* box-shadow: 0 0 15px rgba(0, 255, 204, 0.5), inset 0 0 8px rgba(0, 255, 204, 0.3); */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             position: relative;
-            transition: all 0.3s ease;
         }
 
-        /* تأثير نبض للختم */
         .cyber-stamp::before {
             content: '';
             position: absolute;
@@ -270,75 +269,177 @@
         }
 
         .cyber-stamp i {
-            font-size: 30px;
+            font-size: 24px;
             color: #00ffcc;
             margin-bottom: 3px;
-           filter: drop-shadow(0 0 5px #00ffcc);
+            filter: drop-shadow(0 0 5px #00ffcc);
         }
 
         .cyber-stamp span {
-            font-size: 8px;
+            font-size: 7px;
             color: #00ffcc;
             text-align: center;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             font-family: monospace;
         }
 
         .stamp-text {
-            font-size: 10px;
+            font-size: 9px;
             color: #00aa99;
             font-weight: bold;
             letter-spacing: 1px;
         }
 
-        /* نص VERIFIED سيبراني */
         .verified-badge {
             margin-top: 5px;
-            font-size: 9px;
-            /* color: #00ffcc; */
+            font-size: 8px;
             background: rgba(0, 255, 204, 0.1);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 20px;
             font-family: monospace;
         }
 
         .certificate-meta {
-            margin-top: 30px;
-            padding-top: 15px;
+            margin-top: 25px;
+            padding-top: 12px;
             border-top: 1px solid #e0d5b5;
             text-align: center;
-            font-size: 11px;
+            font-size: 9px;
             color: #8b7a4b;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .cert-number {
             font-family: monospace;
             background: #f0ebd8;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
         }
 
         .btn-print {
-            margin-top: 25px;
+            margin-top: 20px;
             background: #2c3e2f;
             border: none;
             color: #fdf8e7;
-            padding: 8px 28px;
+            padding: 8px 24px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn-print:hover {
             background: #1e2a1f;
+        }
+
+        /* ========== MEDIA QUERIES للجوال ========== */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .certificate-wrapper {
+                padding: 20px 15px;
+            }
+            
+            .certificate-wrapper::before {
+                top: 8px;
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+            }
+            
+            .corner-decoration {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .corner-tl, .corner-tr, .corner-bl, .corner-br {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+            }
+            
+            .certificate-title {
+                font-size: 24px;
+            }
+            
+            .student-name {
+                font-size: 20px;
+            }
+            
+            .course-name-box {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+            
+            .signature-line {
+                font-size: 14px;
+                min-width: 80px;
+            }
+            
+            .cyber-stamp {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .cyber-stamp i {
+                font-size: 20px;
+            }
+            
+            .certificate-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+        
+        /* شاشات صغيرة جداً */
+        @media (max-width: 480px) {
+            .signatures {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .signature-item {
+                width: 100%;
+            }
+            
+            .signature-line {
+                min-width: 150px;
+            }
+            
+            .certificate-title {
+                font-size: 20px;
+            }
+            
+            .header-title {
+                font-size: 10px;
+            }
+            
+            .award-text, .completion-text, .gratitude-text {
+                font-size: 11px;
+            }
+        }
+        
+        /* شاشات تابلت */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .certificate-wrapper {
+                padding: 25px 35px;
+            }
+            
+            .student-name {
+                font-size: 28px;
+            }
         }
 
         @media print {
@@ -351,7 +452,7 @@
             }
             .certificate-wrapper {
                 box-shadow: none;
-                padding: 40px;
+                padding: 30px;
             }
             .cyber-stamp {
                 border-color: #2c5a4a;
@@ -419,7 +520,7 @@
             <div class="cyber-stamp">
                 <i class="fas fa-fingerprint"></i>
                 <span>CYBEReye</span>
-                <span style="font-size: 7px;">SECURE v2.0</span>
+                <span style="font-size: 6px;">SECURE v2.0</span>
             </div>
             <div class="stamp-text">ختم موثق رقمياً</div>
             <div class="verified-badge">

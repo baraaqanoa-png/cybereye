@@ -9,7 +9,7 @@
     /* الحاوية الأساسية */
     .dashboard-wrapper {
         display: flex; gap: 25px; padding: 20px;
-        background: #05080a !important;
+        background: #05040a !important;
         min-height: 90vh; direction: rtl;
         font-family: 'Cairo', sans-serif;
     }
@@ -18,15 +18,15 @@
 
     /* الكروت الجانبية */
     .image-upload-wrapper, .management-menu {
-        background: #0a141a !important;
+        background: #0f0a1a !important;
         border-radius: 20px !important;
         padding: 15px;
-        border: 1px solid #14262e !important;
+        border: 1px solid #2a1a3a !important;
     }
 
     .upload-box {
-        height: 200px; background: #040709 !important;
-        border-radius: 15px; border: 1px solid #14262e !important;
+        height: 200px; background: #06040a !important;
+        border-radius: 15px; border: 1px solid #2a1a3a !important;
         display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
 
@@ -34,30 +34,28 @@
 
     .manage-btn {
         display: flex; align-items: center; padding: 12px 15px; margin-bottom: 10px;
-        border-radius: 12px; color: #7d8d96 !important; text-decoration: none !important;
-        background: #0d1a21 !important; transition: 0.3s; width: 100%; font-weight: 600;
+        border-radius: 12px; color: #8a7a9c !important; text-decoration: none !important;
+        background: #0d0a1a !important; transition: 0.3s; width: 100%; font-weight: 600;
     }
 
-    .manage-btn:hover { background: #14262e !important; color: #1abc9c !important; transform: translateX(-8px); }
-    .manage-btn i { width: 25px; color: #1abc9c !important; }
+    .manage-btn:hover { background: #1a0a2a !important; color: #9b59b6 !important; transform: translateX(-8px); }
+    .manage-btn i { width: 25px; color: #9b59b6 !important; }
 
     /* منطقة الفورم */
     .main-content-area { flex: 1; }
     .form-container {
-        background: #0a141a !important; border-radius: 25px !important;
+        background: #0f0a1a !important; border-radius: 25px !important;
         padding: 40px !important; border: none !important; box-shadow: none !important;
     }
 
-    /* أيقونة التعديل والعنوان - جنزاري بالكامل */
     .form-title {
         color: #ffffff !important; font-weight: 800; margin-bottom: 35px;
         display: flex; align-items: center; gap: 15px; font-size: 1.4rem;
     }
-    .form-title i { color: #1abc9c !important; text-shadow: none; }
+    .form-title i { color: #9b59b6 !important; text-shadow: none; }
 
-    /* المعلومات الأساسية - بدون خطوط بيضاء */
     .form-subtitle {
-        color: #1abc9c !important; font-weight: 700; font-size: 1.1rem;
+        color: #9b59b6 !important; font-weight: 700; font-size: 1.1rem;
         margin-bottom: 25px !important; border: none !important;
         background: transparent !important; padding: 0 !important;
     }
@@ -65,31 +63,27 @@
     .form-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
     .form-group { flex: 1; min-width: 200px; }
 
-    /* وصف الكورس - بعرض الفورم كامل */
     .form-group-full { width: 100%; margin-top: 10px; }
 
-    label { color: #5c707a !important; font-weight: 600; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+    label { color: #7a6b8c !important; font-weight: 600; font-size: 0.9rem; margin-bottom: 10px; display: block; }
 
-    /* المدخلات */
     .form-control, input, select, textarea {
-        background: #040709 !important; border: 1px solid #14262e !important;
-        color: #d1dce2 !important; border-radius: 10px !important;
+        background: #06040a !important; border: 1px solid #2a1a3a !important;
+        color: #d1c4e0 !important; border-radius: 10px !important;
         padding: 12px 15px !important; width: 100%; box-shadow: none !important;
     }
 
-    .form-control:focus { border-color: #1abc9c !important; outline: none; }
+    .form-control:focus { border-color: #9b59b6 !important; outline: none; }
 
-    /* زر الحفظ */
     .btn-primary {
-        background: #1abc9c !important; color: #05080a !important;
+        background: #9b59b6 !important; color: #0f0a1a !important;
         border: none !important; padding: 15px 50px !important;
         border-radius: 12px !important; font-weight: 800 !important;
         cursor: pointer; transition: 0.3s;
     }
-    .btn-primary:active { background: #00bcd4 !important; box-shadow: 0 0 20px rgba(0, 188, 212, 0.4) !important; }
+    .btn-primary:active { background: #bf77f0 !important; box-shadow: 0 0 20px rgba(191, 119, 240, 0.4) !important; }
 
-    /* تنظيف أي خطوط أفقية ناتجة عن الـ Bootstrap */
-    hr { border-top: 1px solid #14262e !important; opacity: 0.2; margin: 20px 0; }
+    hr { border-top: 1px solid #2a1a3a !important; opacity: 0.2; margin: 20px 0; }
 </style>
 @endsection
 
@@ -100,17 +94,17 @@
     <aside class="side-panel">
         {{-- كارد الصورة --}}
         <div class="image-upload-wrapper" onclick="document.getElementById('course_image').click()">
-            <label style="display: block; margin-bottom: 10px; color: #525f7f; font-weight: bold;">غلاف الكورس</label>
+            <label style="display: block; margin-bottom: 10px; color: #7a6b8c; font-weight: bold;">غلاف الكورس</label>
             <div class="upload-box">
                 <img src="{{ asset('storage/' . $course->course_image) }}" id="image-preview" alt="Course Cover">
             </div>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #5e72e4;">اضغطي لتغيير الصورة</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #9b59b6;">اضغطي لتغيير الصورة</p>
             <input type="file" id="course_image" style="display: none;" accept="image/*" onchange="previewImage(event)">
         </div>
 
         {{-- أزرار الإدارة --}}
         <div class="management-menu">
-            <h5 style="font-size: 0.9rem; color: #8898aa; margin-bottom: 15px; padding-right: 10px;">إدارة المحتوى</h5>
+            <h5 style="font-size: 0.9rem; color: #8a7a9c; margin-bottom: 15px; padding-right: 10px;">إدارة المحتوى</h5>
 
             <a href="/cms/video/videos?course_id={{ $course->id }}" class="manage-btn">
                 <i class="fas fa-play-circle"></i>
@@ -121,10 +115,10 @@
                 <span>إدارة الكويزات</span>
             </a>
 
-            <hr style="border-top: 1px solid #f0f2f9;">
+            <hr>
 
             <a href="{{ route('courses.index') }}" class="manage-btn" style="background: transparent;">
-                <i class="fas fa-arrow-right" style="color: #adb5bd;"></i>
+                <i class="fas fa-arrow-right" style="color: #8a7a9c;"></i>
                 <span>عودة للقائمة</span>
             </a>
         </div>
@@ -160,7 +154,6 @@
                 </div>
 
                 <div class="form-row">
-                    {{-- حقل المدرب: يظهر فقط للأدمن (عند وجود متغير $instructors) --}}
                     @if(isset($instructors))
                         <div class="form-group">
                             <label>المدرب المسؤول</label>
@@ -173,7 +166,6 @@
                             </select>
                         </div>
                     @else
-                        {{-- للمدرب: حقل مخفي بقيمة instructor_id الحالية --}}
                         <input type="hidden" id="instructor_id" value="{{ $course->instructor_id }}">
                     @endif
 
@@ -208,7 +200,7 @@
                 </div>
 
                 <div class="form-actions text-start">
-                    <button type="button" onclick="performUpdate({{ $course->id }})" class="btn btn-primary px-5">
+                    <button type="button" onclick="performUpdate({{ $course->id }})" class="btn-primary px-5">
                         <i class="fas fa-save ms-2"></i> حفظ التعديلات
                     </button>
                 </div>
@@ -234,7 +226,6 @@
         formData.append('course_name', document.getElementById('course_name').value);
         formData.append('category_id', document.getElementById('category_id').value);
 
-        // جلب instructor_id (سواء من select أو من hidden input)
         let instructorIdElement = document.getElementById('instructor_id');
         if (instructorIdElement) {
             formData.append('instructor_id', instructorIdElement.value);

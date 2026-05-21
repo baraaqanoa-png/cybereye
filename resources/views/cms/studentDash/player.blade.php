@@ -12,158 +12,155 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
         header { background: #0a141a; border-bottom: 1px solid #14262e; padding: 15px 0; }
         .header-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: #1abc9c; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #9333ea; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
         .course-title-header { font-size: 1rem; color: #7da0a5; margin-top: 5px; }
-        .user-menu { display: flex; gap: 20px; }
+        .user-menu { display: flex; align-items: center; gap: 20px; }
         .user-menu a { color: #fff; text-decoration: none; transition: 0.3s; }
-        .user-menu a:hover { color: #1abc9c; }
+        .user-menu a:hover { color: #9333ea; }
         .course-player-container { display: flex; gap: 25px; margin: 30px auto; flex-wrap: wrap; }
         .sidebar { width: 380px; background: #0a141a; border-radius: 20px; padding: 20px; border: 1px solid #14262e; }
-        .course-sidebar-header h3 { color: #1abc9c; margin-bottom: 15px; }
+        .course-sidebar-header h3 { color: #9333ea; margin-bottom: 15px; }
         .progress-bar { background: #14262e; border-radius: 10px; height: 10px; overflow: hidden; }
-        .progress-fill { width: {{ $progress }}%; background: #1abc9c; height: 100%; border-radius: 10px; }
-        .progress-text { margin-top: 8px; text-align: center; color: #1abc9c; font-size: 0.85rem; }
+        .progress-fill { width: {{ $progress }}%; background: #9333ea; height: 100%; border-radius: 10px; }
+        .progress-text { margin-top: 8px; text-align: center; color: #9333ea; font-size: 0.85rem; }
         .modules-list { margin-top: 20px; }
         .module { margin-bottom: 15px; }
         .module-header { background: #14262e; padding: 12px; border-radius: 12px; cursor: pointer; display: flex; justify-content: space-between; font-weight: bold; }
-        .module-header:hover { background: #1f3a40; }
+        .module-header:hover { background: #241b35; border-color: #9333ea; }
         .lessons-list { margin-right: 15px; margin-top: 8px; display: block; }
         .lesson-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; margin-bottom: 8px; background: #0a141a; border-radius: 12px; border: 1px solid #14262e; transition: 0.3s; }
-        .lesson-item.active { background: #1abc9c20; border-right: 3px solid #1abc9c; }
+        .lesson-item.active { background: #9333ea15; border-right: 3px solid #9333ea; border-color: #9333ea30; }
         .lesson-left { display: flex; align-items: center; gap: 12px; flex: 1; }
-        .lesson-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: #1abc9c; }
+        .lesson-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: #9333ea; }
         .lesson-info { flex: 1; }
         .lesson-title { font-weight: bold; }
         .lesson-duration { font-size: 0.75rem; color: #7da0a5; }
-        .play-icon { cursor: pointer; color: #1abc9c; font-size: 1.2rem; margin-right: 10px; }
+        .play-icon { cursor: pointer; color: #9333ea; font-size: 1.2rem; margin-right: 10px; }
         .main-content { flex: 1; min-width: 300px; }
         .video-container { margin-bottom: 25px; }
         .video-placeholder { background: #0a141a; border-radius: 20px; padding: 60px; text-align: center; border: 1px solid #14262e; }
-        .video-placeholder i { color: #1abc9c; }
+        .video-placeholder i { color: #9333ea; }
         video { width: 100%; border-radius: 20px; background: #000; display: none; }
         .lesson-info-card { background: #0a141a; border-radius: 20px; padding: 25px; border: 1px solid #14262e; margin-top: 20px; }
         .lesson-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #14262e; }
-        .lesson-title-main { color: #1abc9c; font-size: 1.5rem; }
+        .lesson-title-main { color: #9333ea; font-size: 1.5rem; }
         .lesson-actions { display: flex; gap: 10px; }
-        .action-btn { background: #1abc9c; border: none; padding: 8px 16px; border-radius: 8px; color: #05080a; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-        .action-btn:hover { background: #16a085; }
+        .action-btn { background: #9333ea; border: none; padding: 8px 16px; border-radius: 8px; color: #fff; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .action-btn:hover { background: #a855f7; }
         .lesson-description { margin: 20px 0; }
-        .lesson-description h3 { margin-bottom: 10px; color: #1abc9c; }
+        .lesson-description h3 { margin-bottom: 10px; color: #9333ea; }
         .lesson-materials { margin: 30px 0; }
-        .lesson-materials h3 { margin-bottom: 15px; color: #1abc9c; }
+        .lesson-materials h3 { margin-bottom: 15px; color: #9333ea; }
         .materials-list { display: flex; flex-direction: column; gap: 10px; }
         .material-item { display: flex; gap: 15px; background: #071214; border-radius: 12px; padding: 15px; cursor: pointer; border: 1px solid #14262e; transition: 0.3s; }
-        .material-item:hover { background: #1a2f35; transform: translateX(-5px); }
+        .material-item:hover { background: #1b1429; transform: translateX(-5px); border-color: #9333ea50; }
         .navigation-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
-        .nav-btn { background: #1abc9c; border: none; padding: 10px 20px; border-radius: 8px; color: #05080a; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-        .nav-btn:hover { background: #16a085; }
+        .nav-btn { background: #9333ea; border: none; padding: 10px 20px; border-radius: 8px; color: #fff; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .nav-btn:hover { background: #a855f7; }
         .footer { text-align: center; padding: 25px; background: #0a141a; margin-top: 50px; border-top: 1px solid #14262e; color: #7da0a5; }
-        .footer-links a { color: #1abc9c; margin: 0 10px; text-decoration: none; }
+        .footer-links a { color: #9333ea; margin: 0 10px; text-decoration: none; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 9999; }
-        .modal-content { background: #0a141a; padding: 30px; border-radius: 20px; width: 500px; max-width: 90%; border: 1px solid #1abc9c; }
+        .modal-content { background: #0a141a; padding: 30px; border-radius: 20px; width: 500px; max-width: 90%; border: 1px solid #9333ea; }
         .close-modal { float: left; cursor: pointer; font-size: 24px; color: #fff; transition: 0.3s; }
-        .close-modal:hover { color: #1abc9c; }
+        .close-modal:hover { color: #9333ea; }
         textarea { background: #071214; color: white; border: 1px solid #14262e; border-radius: 12px; padding: 12px; width: 100%; font-family: inherit; }
         @media (max-width: 800px) { .sidebar { width: 100%; } .lesson-header { flex-direction: column; align-items: flex-start; } }
 
-   /* ========== زر الكويز الرئيسي ========== */
-.btn-gradient {
-    background: #1e293b;
-    color: white;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: all 0.25s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+        /* ========== زر الكويز الرئيسي ========== */
+        .btn-gradient {
+            background: #9333ea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 8px rgba(147, 51, 234, 0.3);
+        }
 
-.btn-gradient:hover {
-    background: #334155;
-    transform: translateY(-1px);
-    color: white;
-}
+        .btn-gradient:hover {
+            background: #a855f7;
+            transform: translateY(-1px);
+            color: white;
+        }
 
-.btn-gradient:active {
-    transform: translateY(0);
-}
+        .btn-gradient:active {
+            transform: translateY(0);
+        }
 
-.btn-gradient i {
-    margin-left: 6px;
-    font-size: 0.8rem;
-}
+        .btn-gradient i {
+            margin-left: 6px;
+            font-size: 0.8rem;
+        }
 
-/* ========== القائمة المنسدلة ========== */
-.dropdown-menu {
-    /* background: #ffffff; */
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 6px 0;
-    min-width: 200px;
-    margin-top: 6px;
-}
+        /* ========== القائمة المنسدلة ========== */
+        .dropdown-menu {
+            background: #0a141a;
+            border-radius: 10px;
+            border: 1px solid #14262e;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            padding: 6px 0;
+            min-width: 200px;
+            margin-top: 6px;
+        }
 
-.dropdown-item {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-    color: #1e293b;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+        .dropdown-item {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            color: #e0e0e0;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-.dropdown-item i {
-    font-size: 0.75rem;
-    width: 18px;
-    color: #64748b;
-}
+        .dropdown-item i {
+            font-size: 0.85rem;
+            width: 18px;
+            color: #9333ea;
+        }
 
-.dropdown-item:hover {
-    background: #f1f5f9;
-    color: #0f172a;
-}
+        .dropdown-item:hover {
+            background: #1b1429;
+            color: #fff;
+        }
 
-.dropdown-item:hover i {
-    color: #1e293b;
-}
+        /* ========== البادج ========== */
+        .badge.bg-secondary {
+            background: #14262e !important;
+            color: #7da0a5 !important;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-right: 6px;
+            border: 1px solid #9333ea40;
+        }
 
-/* ========== البادج ========== */
-.badge.bg-secondary {
-    background: #e2e8f0 !important;
-    color: #475569 !important;
-    font-weight: 500;
-    padding: 2px 6px;
-    border-radius: 12px;
-    font-size: 0.65rem;
-    margin-right: 6px;
-}
+        /* ========== زر القائمة المنسدلة نفسه ========== */
+        .dropdown-toggle::after {
+            margin-right: 6px;
+            vertical-align: middle;
+            font-size: 0.7rem;
+        }
 
-/* ========== زر القائمة المنسدلة نفسه ========== */
-.dropdown-toggle::after {
-    margin-right: 6px;
-    vertical-align: middle;
-    font-size: 0.7rem;
-}
+        /* ========== زر "لا توجد كويزات" ========== */
+        .btn-outline-secondary {
+            background: #071214;
+            border: 1px solid #14262e;
+            color: #5d757d;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: not-allowed;
+        }
 
-/* ========== زر "لا توجد كويزات" ========== */
-.btn-outline-secondary {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #64748b;
-    padding: 6px 16px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    cursor: not-allowed;
-}
-
-.btn-outline-secondary i {
-    margin-left: 6px;
-    font-size: 0.75rem;
-}
-   </style>
+        .btn-outline-secondary i {
+            margin-left: 6px;
+            font-size: 0.75rem;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -185,7 +182,7 @@
                             @foreach($course->quizzes as $quiz)
                                 <li>
                                     <a class="dropdown-item" href="{{ route('quiz.start', $quiz->id) }}">
-                                        <i class="fas fa-play-circle text-primary me-2"></i> {{ $quiz->title }}
+                                        <i class="fas fa-play-circle me-2"></i> {{ $quiz->title }}
                                         @if($quiz->duration)
                                             <span class="badge bg-secondary ms-2">{{ $quiz->duration }} دقيقة</span>
                                         @endif
@@ -208,7 +205,6 @@
         <aside class="sidebar">
             <div class="course-sidebar-header">
                 <h3>{{ $course->course_name }}</h3>
-
             </div>
             <div class="modules-list" id="modulesList">
                 @php
@@ -246,7 +242,6 @@
                 </div>
                 @endforeach
             </div>
-
         </aside>
 
         <main class="main-content">
@@ -279,7 +274,7 @@
                         <div class="materials-list">
                             @foreach($course->materials as $material)
                             <div class="material-item" onclick="downloadMaterial('{{ asset('storage/' . $material->file_path) }}')">
-                                <div class="material-icon"><i class="fas fa-file-pdf fa-2x"></i></div>
+                                <div class="material-icon"><i class="fas fa-file-pdf fa-2x" style="color: #9333ea;"></i></div>
                                 <div>
                                     <strong>{{ $material->title }}</strong>
                                     <p style="color: #aaa;">{{ $material->description ?? 'ملف تعليمي' }}</p>
@@ -298,7 +293,6 @@
         </main>
     </div>
 
-
     <div class="modal" id="notesModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeNotesModal()">&times;</span>
@@ -314,17 +308,17 @@
         let currentVideoId = null;
         let currentVideoElement = null;
 
-        // تحديث نسبة التقدم
         function updateProgress() {
             let checkboxes = document.querySelectorAll('.lesson-checkbox');
             let total = checkboxes.length;
             let completed = Array.from(checkboxes).filter(cb => cb.checked).length;
             let percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-            document.getElementById('progressFill').style.width = percent + '%';
-            document.getElementById('progressPercentage').innerText = percent;
+            let progressFill = document.getElementById('progressFill');
+            if(progressFill) progressFill.style.width = percent + '%';
+            let progressPercentage = document.getElementById('progressPercentage');
+            if(progressPercentage) progressPercentage.innerText = percent;
         }
 
-        // تشغيل الفيديو
         function playVideo(id, title, description, url, element) {
             currentVideoId = id;
             document.getElementById('currentLessonTitle').innerText = title;
@@ -337,7 +331,6 @@
             video.style.display = 'block';
             video.play();
 
-            // تمييز الدرس النشط
             document.querySelectorAll('.lesson-item').forEach(el => el.classList.remove('active'));
             if (element) element.classList.add('active');
             currentVideoElement = element;
@@ -346,7 +339,6 @@
             localStorage.setItem('current_course_id', {{ $course->id }});
         }
 
-        // التعامل مع تغيير حالة checkbox (تسجيل الإكمال)
         document.querySelectorAll('.lesson-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', function(e) {
                 e.stopPropagation();
@@ -355,12 +347,11 @@
                 axios.post('{{ route("student.video.completed") }}', {
                     video_id: videoId,
                     course_id: {{ $course->id }},
-                    completed: completed  // يجب أن يقبل الـ API هذه القيمة
+                    completed: completed
                 }).then(response => {
                     if (response.data.success) {
                         updateProgress();
                     } else {
-                        // إعادة checkbox إلى حالته السابقة في حالة الفشل
                         this.checked = !completed;
                         alert('حدث خطأ: ' + (response.data.message || ''));
                     }
@@ -371,7 +362,6 @@
             });
         });
 
-        // دالة حفظ الملاحظات
         function takeNotes() {
             let savedNotes = localStorage.getItem('course_notes_{{ $course->id }}') || '';
             document.getElementById('notesText').value = savedNotes;
@@ -386,7 +376,6 @@
         }
         function downloadMaterial(url) { window.open(url, '_blank'); }
 
-        // فتح/إغلاق الوحدات
         function toggleModule(index) {
             let lessons = document.getElementById('moduleLessons' + index);
             let icon = document.getElementById('moduleIcon' + index);
@@ -401,7 +390,6 @@
             }
         }
 
-        // التنقل بين الدروس
         function previousLesson() {
             if (!currentVideoId) { alert('الرجاء اختيار درس أولاً'); return; }
             const videoIds = videos.map(v => v.id);
@@ -410,7 +398,6 @@
                 let prevVideo = videos[index-1];
                 let element = document.querySelector(`.lesson-item[data-video-id="${prevVideo.id}"]`);
                 if (element) {
-                    let playIcon = element.querySelector('.play-icon');
                     playVideo(prevVideo.id, prevVideo.title, prevVideo.description, '{{ asset("") }}' + '/' + prevVideo.url, element);
                 }
             } else { alert('هذا هو أول درس'); }
@@ -424,7 +411,6 @@
                 let nextVideo = videos[index+1];
                 let element = document.querySelector(`.lesson-item[data-video-id="${nextVideo.id}"]`);
                 if (element) {
-                    let playIcon = element.querySelector('.play-icon');
                     playVideo(nextVideo.id, nextVideo.title, nextVideo.description, '{{ asset("") }}' + '/' + nextVideo.url, element);
                 }
             } else { alert('هذا هو آخر درس'); }
@@ -443,7 +429,6 @@
                 if (video) {
                     let element = document.querySelector(`.lesson-item[data-video-id="${video.id}"]`);
                     if (element) {
-                        let playIcon = element.querySelector('.play-icon');
                         playVideo(video.id, video.title, video.description, '{{ asset("") }}' + '/' + video.url, element);
                     }
                 }

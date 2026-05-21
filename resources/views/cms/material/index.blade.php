@@ -4,52 +4,53 @@
 
 @section('styles')
 <style>
-    .admin-main { background-color: #0b0f19 !important; }
-    .main-wrapper-custom { width: 100%; padding: 40px; background-color: #0b0f19; min-height: 100vh; direction: rtl; box-sizing: border-box; }
+    .admin-main { background-color: #0f0a1a !important; }
+    .main-wrapper-custom { width: 100%; padding: 40px; background-color: #0f0a1a; min-height: 100vh; direction: rtl; box-sizing: border-box; }
 
     .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
     .page-header-text h1 { color: #ffffff; font-size: 28px; font-weight: 800; margin: 0; }
-    .page-header-text p { color: #9ca3af; margin-top: 8px; font-size: 15px; }
+    .page-header-text p { color: #8a7a9c; margin-top: 8px; font-size: 15px; }
 
     .btn-add-main {
-        background-color: #10b981; color: white !important; padding: 12px 24px; border-radius: 12px;
+        background-color: #9b59b6; color: white !important; padding: 12px 24px; border-radius: 12px;
         font-weight: 700; display: flex; align-items: center; gap: 10px; transition: 0.3s;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); border: none; text-decoration: none;
+        box-shadow: 0 4px 15px rgba(155, 89, 182, 0.2); border: none; text-decoration: none;
     }
+    .btn-add-main:hover { background-color: #bf77f0; transform: translateY(-2px); }
 
     .materials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
 
     .material-card {
-        background: #111827; border: 1px solid #1f2937; border-radius: 15px; overflow: hidden;
+        background: #0d0818; border: 1px solid #2a1a3a; border-radius: 15px; overflow: hidden;
         display: flex; flex-direction: column; transition: all 0.4s ease;
     }
-    .material-card:hover { border-color: #10b981; transform: translateY(-8px); }
+    .material-card:hover { border-color: #9b59b6; transform: translateY(-8px); box-shadow: 0 10px 30px rgba(155, 89, 182, 0.1); }
 
     .file-icon-wrapper {
-        height: 120px; background: #161e2d; display: flex; align-items: center;
-        justify-content: center; position: relative; border-bottom: 1px solid #1f2937;
+        height: 120px; background: #0d0818; display: flex; align-items: center;
+        justify-content: center; position: relative; border-bottom: 1px solid #2a1a3a;
     }
     .file-type-badge {
-        position: absolute; top: 10px; right: 10px; background: #10b981;
+        position: absolute; top: 10px; right: 10px; background: #9b59b6;
         color: white; padding: 2px 10px; border-radius: 5px; font-size: 10px; font-weight: 800;
     }
 
     .card-content { padding: 20px; flex-grow: 1; }
 
     .course-badge {
-        display: inline-block; background: rgba(16, 185, 129, 0.1); color: #10b981;
+        display: inline-block; background: rgba(155, 89, 182, 0.1); color: #9b59b6;
         padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
-        margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.2);
+        margin-bottom: 12px; border: 1px solid rgba(155, 89, 182, 0.2);
     }
 
     .card-content h3 { color: #ffffff; font-size: 18px; font-weight: 800; margin-bottom: 10px; }
-    .card-content p { color: #9ca3af; font-size: 13px; line-height: 1.5; }
+    .card-content p { color: #8a7a9c; font-size: 13px; line-height: 1.5; }
 
     .card-footer {
-        padding: 15px 20px; background: #0b0f19; display: flex; justify-content: space-between;
-        align-items: center; border-top: 1px solid #1f2937;
+        padding: 15px 20px; background: #0f0a1a; display: flex; justify-content: space-between;
+        align-items: center; border-top: 1px solid #2a1a3a;
     }
-    .download-stat { color: #9ca3af; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+    .download-stat { color: #8a7a9c; font-size: 12px; display: flex; align-items: center; gap: 5px; }
 
     .action-btns { display: flex; gap: 8px; }
     .btn-icon {
@@ -57,9 +58,12 @@
         justify-content: center; text-decoration: none; transition: 0.3s; font-size: 14px;
         border: none; cursor: pointer;
     }
-    .btn-download { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-    .btn-edit { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+    .btn-download { background: rgba(155, 89, 182, 0.1); color: #9b59b6; }
+    .btn-download:hover { background: #9b59b6; color: white; }
+    .btn-edit { background: rgba(155, 89, 182, 0.1); color: #9b59b6; }
+    .btn-edit:hover { background: #9b59b6; color: white; }
     .btn-delete { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .btn-delete:hover { background: #ef4444; color: white; }
 </style>
 @endsection
 
@@ -72,21 +76,19 @@
         </div>
 
         <div class="actions" style="display: flex; gap: 10px;">
-            <a href="{{ route('materials.trashed') }}" class="btn-add-main" style="background-color: #374151; box-shadow: none;">
+            <a href="{{ route('materials.trashed') }}" class="btn-add-main" style="background-color: #2a1a3a; box-shadow: none;">
                 <i class="fas fa-archive"></i> الأرشيف
             </a>
 
             <a href="{{ route('materials.create', ['course_id' => $courseId]) }}" class="btn-add-main">
                 <i class="fas fa-plus"></i> رفع مادة جديدة
             </a>
-
         </div>
     </div>
 
     <div class="materials-grid">
         @forelse($materials as $material)
         <div class="material-card" id="card-{{ $material->id }}">
-            {{-- ارجعيله هدا اظن مكانه خطا --}}
             <input type="hidden" name="course_id" value="{{ $courseId }}">
             <div class="file-icon-wrapper">
                 <span class="file-type-badge">{{ strtoupper($material->file_type) }}</span>
@@ -97,7 +99,7 @@
                 @elseif(in_array($material->file_type, ['xls', 'xlsx']))
                     <i class="fas fa-file-excel fa-4x" style="color: #10b981;"></i>
                 @else
-                    <i class="fas fa-file-alt fa-4x" style="color: #9ca3af;"></i>
+                    <i class="fas fa-file-alt fa-4x" style="color: #9b59b6;"></i>
                 @endif
             </div>
 
@@ -131,8 +133,8 @@
         </div>
         @empty
             <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-                <i class="fas fa-folder-open fa-4x" style="color: #1f2937; margin-bottom: 20px;"></i>
-                <p style="color: #9ca3af;">لا توجد مواد تعليمية نشطة حالياً.</p>
+                <i class="fas fa-folder-open fa-4x" style="color: #2a1a3a; margin-bottom: 20px;"></i>
+                <p style="color: #8a7a9c;">لا توجد مواد تعليمية نشطة حالياً.</p>
             </div>
         @endforelse
     </div>
@@ -147,12 +149,12 @@
             text: "يمكنك العثور عليها واستعادتها من قسم الأرشيف لاحقاً",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#10b981',
+            confirmButtonColor: '#9b59b6',
             cancelButtonColor: '#374151',
             confirmButtonText: 'نعم، أرشفها',
             cancelButtonText: 'إلغاء',
-            background: '#111827',
-            color: '#fff'
+            background: '#0d0818',
+            color: '#d1c4e0'
         }).then((result) => {
             if (result.isConfirmed) {
                 performDelete(id, reference);
@@ -167,8 +169,8 @@
                     icon: 'success',
                     title: 'تم النقل للأرشيف',
                     text: response.data.title || 'تمت العملية بنجاح',
-                    background: '#111827',
-                    color: '#fff',
+                    background: '#0d0818',
+                    color: '#d1c4e0',
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -186,8 +188,9 @@
                     icon: 'error',
                     title: 'خطأ في العملية',
                     text: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً',
-                    background: '#111827',
-                    color: '#fff'
+                    background: '#0d0818',
+                    color: '#d1c4e0',
+                    confirmButtonColor: '#9b59b6'
                 });
             });
     }

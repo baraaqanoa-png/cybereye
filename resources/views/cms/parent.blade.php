@@ -467,6 +467,10 @@
                     <i class="fas fa-book-open"></i>
                     <span>كورساتي المسجلة</span>
                 </a>
+                <a href="{{ route('student.ctf') }}" class="admin-menu-item">
+                    <i class="fas fa-flag-checkered"></i>
+                    <span>CTF</span>
+                </a>
                 <a href="{{ route('certificate.my-certificates') }}" class="admin-menu-item">
                     <i class="fas fa-certificate"></i>
                     <span>شهاداتي</span>

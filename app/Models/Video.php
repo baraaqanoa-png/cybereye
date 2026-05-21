@@ -16,7 +16,10 @@ class Video extends Model
         'duration',
         'lesson_id',
         'course_id',
+        'youtube_url',
         'order_number'
+
+      
     ];
 
     // العلاقة مع الدرس

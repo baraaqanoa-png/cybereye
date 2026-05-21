@@ -16,16 +16,15 @@ use Illuminate\Support\Str;
 class VideoController extends Controller
 {
 
-public function index(Request $request)
-{
-    $courseId = $request->query('course_id');
-    // 2. الفلترة بتصير بناءً على رقم الكورس
-    $videos = Video::where('course_id', $courseId)
-                   ->orderBy('order_number', 'asc')
-                   ->get();
-    // 3. نمرر المتغيرات الجديدة للـ View
-    return view('cms.Video.index', compact('videos', 'courseId'));
-}
+    public function index(Request $request)
+    {
+        $courseId = $request->query('course_id');
+        $videos = Video::where('course_id', $courseId)
+                       ->orderBy('order_number', 'asc')
+                       ->get();
+        return view('cms.Video.index', compact('videos', 'courseId'));
+    }
+
     public function player($courseId)
     {
         $query = Video::orderBy('created_at', 'asc');
@@ -48,18 +47,19 @@ public function index(Request $request)
 
     public function store(Request $request)
     {
+        if (auth()->check() && auth()->user()->role == 'Admin') {
+            abort(403, 'غير مسموح للأدمن بإضافة فيديوهات');
+        }
 
-    if (auth()->check() && auth()->user()->role == 'Admin') {
-        abort(403, 'غير مسموح للأدمن بإضافة فيديوهات');
-    }
-
+        // تم تحويل القواعد إلى مصفوفة [] لحل مشكلة تعارض الـ regex والـ delimiter
         $validator = Validator::make($request->all(), [
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'duration'    => 'nullable|integer',
-            'url'         => 'required|file|mimes:mp4,mkv,avi,mov|max:102400',
-            'lesson_id'   => 'nullable|exists:lessons,id',
-             'course_id'   => 'required|exists:courses,id',
+            'title'        => ['required', 'string', 'max:255'],
+            'description'  => ['nullable', 'string'],
+            'duration'     => ['nullable', 'integer'],
+            'url'          => ['nullable', 'file', 'mimes:mp4,mkv,avi,mov', 'max:102400'],
+            'youtube_url'  => ['nullable', 'url', 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/i'],
+            'lesson_id'    => ['nullable', 'exists:lessons,id'],
+            'course_id'    => ['required', 'exists:courses,id'],
         ]);
 
         if ($validator->fails()) {
@@ -71,9 +71,24 @@ public function index(Request $request)
         $data = $validator->validated();
         $data['duration'] = $request->duration ?? 0;
 
-        if ($request->hasFile('url')) {
+        $hasFile = $request->hasFile('url');
+        $hasYoutube = !empty($request->youtube_url);
+
+        if (!$hasFile && !$hasYoutube) {
+            return response()->json([
+                'message' => 'يرجى إما رفع ملف فيديو أو إدخال رابط يوتيوب'
+            ], 422);
+        }
+
+        if ($hasFile) {
             $path = $request->file('url')->store('videos', 'public');
             $data['url'] = 'storage/' . $path;
+            $data['youtube_url'] = null;
+        }
+
+        if ($hasYoutube) {
+            $data['youtube_url'] = $this->convertToEmbedUrl($request->youtube_url);
+            $data['url'] = null;
         }
 
         $video = Video::create($data);
@@ -88,11 +103,13 @@ public function index(Request $request)
     {
         $video = Video::findOrFail($id);
 
+        // تم تحويل قواعد التحديث إلى مصفوفة أيضاً لمنع الخطأ
         $validator = Validator::make($request->all(), [
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'duration'    => 'nullable|integer',
-            'url'         => 'nullable|file|mimes:mp4,mkv,avi,mov|max:102400',
+            'title'        => ['required', 'string', 'max:255'],
+            'description'  => ['nullable', 'string'],
+            'duration'     => ['nullable', 'integer'],
+            'url'          => ['nullable', 'file', 'mimes:mp4,mkv,avi,mov', 'max:102400'],
+            'youtube_url'  => ['nullable', 'url', 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/i'],
         ]);
 
         if ($validator->fails()) {
@@ -104,15 +121,27 @@ public function index(Request $request)
         $data = $validator->validated();
         $data['duration'] = $request->duration ?? 0;
 
-        if ($request->hasFile('url')) {
+        $hasFile = $request->hasFile('url');
+        $hasYoutube = !empty($request->youtube_url);
 
+        if ($hasFile) {
             if ($video->url) {
                 $old = str_replace('storage/', '', $video->url);
                 Storage::disk('public')->delete($old);
             }
-
             $path = $request->file('url')->store('videos', 'public');
             $data['url'] = 'storage/' . $path;
+            $data['youtube_url'] = null;
+        }
+
+        if ($hasYoutube) {
+            $data['youtube_url'] = $this->convertToEmbedUrl($request->youtube_url);
+            $data['url'] = null;
+        }
+
+        if (!$hasFile && !$hasYoutube) {
+            unset($data['url']);
+            unset($data['youtube_url']);
         }
 
         $video->update($data);
@@ -149,7 +178,6 @@ public function index(Request $request)
         $videoId = $request->video_id;
         $courseId = $request->course_id;
 
-        // تسجيل إكمال الفيديو
         StudentVideoProgress::updateOrCreate([
             'student_id' => $student->id,
             'video_id'   => $videoId,
@@ -165,16 +193,12 @@ public function index(Request $request)
             ->count();
 
         $courseCompleted = ($totalVideos > 0 && $totalVideos == $completedVideos);
-
-        // التحقق مما إذا كان هذا هو آخر فيديو
         $isLastVideo = ($completedVideos >= $totalVideos - 1);
-
         $hasCertificate = Certificate::where('student_id', $student->id)
             ->where('course_id', $courseId)
             ->exists();
 
         $percentage = $totalVideos > 0 ? round(($completedVideos / $totalVideos) * 100) : 0;
-
         $certificateUrl = null;
 
         if ($courseCompleted && !$hasCertificate) {
@@ -204,5 +228,20 @@ public function index(Request $request)
                 'is_completed' => $courseCompleted
             ]
         ]);
+    }
+
+    /**
+     * تحويل رابط يوتيوب العادي إلى رابط embed
+     */
+    private function convertToEmbedUrl($url)
+    {
+        // استخدام رمز # كمحدد (Delimiter) بدلاً من / لمنع أي تعارض داخلي نهائياً
+        $pattern = '#(?:youtube\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})#i';
+        
+        if (preg_match($pattern, $url, $matches)) {
+            return 'https://www.youtube.com/embed/' . $matches[1];
+        }
+
+        return $url;
     }
 }
