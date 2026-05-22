@@ -137,6 +137,63 @@ class CourseSeeder extends Seeder
                 'category_id' => $categories->where('title', 'اختبار الاختراق')->first()?->id ?? 1,
                 'instructor_id' => $instructors->first()?->id ?? 1,
             ],
+            
+                [
+                    'course_name' => 'تدريب ميداني: أمن الشبكات',
+                    'short_description' => 'برنامج تدريب عملي مكثف لتأمين الشبكات في بيئات حقيقية',
+                    'no_hours' => 100,
+                    'level' => 'advanced',
+                    'rating' => 5.0,
+                    'status' => 'active',
+                    'course_image' => 'courses/internship_network.jpg',
+                    'category_id' => $categories->where('title', 'أمن الشبكات')->first()?->id ?? 1,
+                    'instructor_id' => $instructors->first()?->id ?? 1,
+                ],
+                [
+                    'course_name' => 'مسار التدريب الميداني في الاختراق الأخلاقي',
+                    'short_description' => 'تطبيق عملي متقدم لاكتشاف الثغرات في أنظمة المؤسسات',
+                    'no_hours' => 120,
+                    'level' => 'advanced',
+                    'rating' => 5.0,
+                    'status' => 'active',
+                    'course_image' => 'courses/internship_hacking.jpg',
+                    'category_id' => $categories->where('title', 'الاختراق الأخلاقي')->first()?->id ?? 1,
+                    'instructor_id' => $instructors->first()?->id ?? 1,
+                ],
+                
+                    [
+                        'course_name' => 'تدريب ميداني: الاستجابة للحوادث السيبرانية',
+                        'short_description' => 'التعامل العملي مع الهجمات السيبرانية واحتواء التهديدات فور وقوعها',
+                        'no_hours' => 80,
+                        'level' => 'advanced',
+                        'rating' => 5.0,
+                        'status' => 'active',
+                        'course_image' => 'courses/internship_incident.jpg',
+                        'category_id' => $categories->where('title', 'الاستجابة للحوادث')->first()?->id ?? 1,
+                        'instructor_id' => $instructors->first()?->id ?? 1,
+                    ],
+                    [
+                        'course_name' => 'مسار ميداني: التحقيق الجنائي الرقمي',
+                        'short_description' => 'استخراج الأدلة الرقمية وتحليلها من الأجهزة المخترقة بطريقة قانونية',
+                        'no_hours' => 90,
+                        'level' => 'advanced',
+                        'rating' => 5.0,
+                        'status' => 'active',
+                        'course_image' => 'courses/internship_forensics.jpg',
+                        'category_id' => $categories->where('title', 'تحليل البرمجيات الخبيثة')->first()?->id ?? 1,
+                        'instructor_id' => $instructors->first()?->id ?? 1,
+                    ],
+                    [
+                        'course_name' => 'تدريب ميداني: أمن السحابة المؤسسي',
+                        'short_description' => 'إدارة وتأمين البيئات السحابية الضخمة (Enterprise Cloud Security)',
+                        'no_hours' => 110,
+                        'level' => 'advanced',
+                        'rating' => 5.0,
+                        'status' => 'active',
+                        'course_image' => 'courses/internship_cloud.jpg',
+                        'category_id' => $categories->where('title', 'أمن السحابة')->first()?->id ?? 1,
+                        'instructor_id' => $instructors->first()?->id ?? 1,
+                    ]
         ];
 
         foreach ($courses as $course) {

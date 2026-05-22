@@ -435,4 +435,37 @@ public function showCoursePlayer($id)
 
         return view('cms.studentDash.player', compact('course'));
     }
+
+
+
+ 
+
+    public function verifyInternship(Request $request, $id)
+    {
+        $request->validate(['access_code' => 'required|string']);
+    
+        // 1. الحصول على الـ User1 الحالي
+        $user = auth('student')->user(); 
+    
+        // 2. الوصول للطالب عبر العلاقة التي صححناها أعلاه
+        $student = $user->student; 
+    
+        if (!$student) {
+            return back()->with('error', 'بيانات الطالب غير موجودة.');
+        }
+    
+        // 3. التحقق من الكود
+        if ($request->access_code !== '2026') {
+            return back()->with('error', 'كود التفعيل غير صحيح!');
+        }
+    
+        // 4. التسجيل
+        if ($student->courses()->where('course_id', $id)->exists()) {
+            return back()->with('info', 'أنت مسجل بالفعل في هذا المسار.');
+        }
+    
+        $student->courses()->attach($id);
+    
+        return redirect()->route('course.player', ['id' => $id]);
+    }
 }

@@ -178,6 +178,7 @@
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s;
+            position: relative;
         }
 
         .course-card:hover {
@@ -198,6 +199,20 @@
         .course-instructor {
             color: #888;
             font-size: 0.8rem;
+        }
+
+        /* الشارة المخصصة لكورسات التدريب الميداني */
+        .internship-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(234, 179, 8, 0.15);
+            color: #eab308;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 1px solid rgba(234, 179, 8, 0.3);
         }
 
         .course-body {
@@ -338,7 +353,7 @@
             background: rgba(10, 14, 23, 0.95);
             border-radius: 20px;
             padding: 30px;
-            max-width: 400px;
+            max-width: 420px;
             width: 90%;
             border: 1px solid rgba(189, 95, 255, 0.3);
             text-align: center;
@@ -348,6 +363,27 @@
             display: flex;
             gap: 15px;
             margin-top: 20px;
+        }
+
+        /* حقل إدخال الكود السري التابع للثيم السيبراني */
+        .access-code-input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(189, 95, 255, 0.4);
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            outline: none;
+            font-family: 'Cairo', sans-serif;
+        }
+        .access-code-input:focus {
+            border-color: #bd5fff;
+            box-shadow: 0 0 10px rgba(189, 95, 255, 0.3);
         }
 
         /* Responsive */
@@ -459,8 +495,19 @@
                 @foreach($allCourses as $course)
                     @php
                         $isEnrolled = $enrolledCourses->contains($course->id);
+                        
+                        // هنا نضع شرطاً ذكياً: إذا كان معرف الكورس أو اسمه يدل على التدريب الميداني
+                        // يمكنك استبدال الشرط بـ حقل حقيقي لاحقاً إن أردت مثل $course->category == 'internship'
+                        $isInternship = Str::contains(strtolower($course->course_name), ['تدريب', 'internship', 'ميداني']);
                     @endphp
                     <div class="course-card">
+                        
+                        @if($isInternship)
+                            <div class="internship-badge">
+                                <i class="fas fa-briefcase"></i> تدريب ميداني معتمد
+                            </div>
+                        @endif
+
                         <div class="course-header">
                             <h3>{{ $course->course_name }}</h3>
                             <p class="course-instructor">
@@ -475,7 +522,7 @@
                                         <i class="fas fa-play"></i> متابعة
                                     </a>
                                 @else
-                                    <button onclick="showEnrollModal({{ $course->id }}, '{{ addslashes($course->course_name) }}')" class="btn btn-outline">
+                                    <button onclick="showEnrollModal({{ $course->id }}, '{{ addslashes($course->course_name) }}', {{ $isInternship ? 'true' : 'false' }})" class="btn btn-outline">
                                         <i class="fas fa-plus"></i> تسجيل
                                     </button>
                                 @endif
@@ -508,28 +555,97 @@
 
     <div id="enrollModal" class="modal">
         <div class="modal-content">
-            <h3 style="color: #bd5fff; margin-bottom: 15px;">تسجيل في الكورس</h3>
-            <p>هل أنت متأكد من رغبتك في التسجيل في كورس <strong id="courseName"></strong>؟</p>
-            <form id="enrollForm" method="POST" action="{{ route('student.enroll') }}">
+            <div id="modalIcon" style="font-size: 2.5rem; color: #bd5fff; margin-bottom: 10px;">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3 id="modalTitle" style="color: #bd5fff; margin-bottom: 15px;">تسجيل في الكورس</h3>
+            <p id="modalDescription">هل أنت متأكد من رغبتك في التسجيل في كورس <strong id="courseName"></strong>؟</p>
+            
+            <form id="enrollForm" method="POST" action="">
                 @csrf
                 <input type="hidden" name="course_id" id="courseId">
+                
+                <div id="accessCodeWrapper" style="display: none;">
+                    <input type="text" name="access_code" id="accessCodeInput" class="access-code-input" placeholder="أدخل كود التفعيل السري هنا...">
+                    <p style="color: #888; font-size: 0.8rem; margin-top: 8px;"><i class="fas fa-info-circle"></i> هذا المسار مقفل، يرجى الحصول على الكود من المهندس المشرف.</p>
+                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn btn-outline" onclick="closeModal()">إلغاء</button>
-                    <button type="submit" class="btn btn-primary">تسجيل</button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary">تأكيد التسجيل</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        function showEnrollModal(courseId, courseName) {
-            document.getElementById('courseId').value = courseId;
-            document.getElementById('courseName').innerText = courseName;
-            document.getElementById('enrollModal').style.display = 'flex';
-        }
+        function showEnrollModal(courseId, courseName, isInternship) {
+    const form = document.getElementById('enrollForm');
+    const codeWrapper = document.getElementById('accessCodeWrapper');
+    const codeInput = document.getElementById('accessCodeInput');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalIcon = document.getElementById('modalIcon');
+    const submitBtn = document.getElementById('submitBtn');
+
+    document.getElementById('courseId').value = courseId;
+    document.getElementById('courseName').innerText = courseName;
+
+    if (isInternship) {
+        // بدلاً من السطر القديم، اجعله هكذا:
+form.action = "/cms/course/verify-internship/" + courseId;
+        codeWrapper.style.display = 'block';
+        codeInput.required = true;
+        modalTitle.innerText = "تفعيل مسار التدريب الميداني";
+        modalIcon.innerHTML = '<i class="fas fa-lock" style="color: #eab308;"></i>';
+        submitBtn.innerText = "تحقق وتفعيل الكورس";
+    } else {
+        form.action = "{{ route('student.enroll') }}";
+        codeWrapper.style.display = 'none';
+        codeInput.required = false;
+        modalTitle.innerText = "تسجيل في الكورس";
+        modalIcon.innerHTML = '<i class="fas fa-graduation-cap"></i>';
+        submitBtn.innerText = "تأكيد التسجيل";
+    }
+
+    document.getElementById('enrollModal').style.display = 'flex';
+}
+        // تحديث الدالة لتستقبل معيار "هل الكورس تدريب ميداني؟"
+        // function showEnrollModal(courseId, courseName, isInternship) {
+        //     const form = document.getElementById('enrollForm');
+        //     const codeWrapper = document.getElementById('accessCodeWrapper');
+        //     const codeInput = document.getElementById('accessCodeInput');
+        //     const modalTitle = document.getElementById('modalTitle');
+        //     const modalDescription = document.getElementById('modalDescription');
+        //     const modalIcon = document.getElementById('modalIcon');
+        //     const submitBtn = document.getElementById('submitBtn');
+
+        //     document.getElementById('courseId').value = courseId;
+        //     document.getElementById('courseName').innerText = courseName;
+
+        //     if (isInternship) {
+        //   window.href()='{{ route('course.player', $course->id) }}'
+        //   form.action = "/cms/course/course/" + courseId + "/enroll";
+        //         codeWrapper.style.display = 'block';
+        //         codeInput.required = true;
+        //         modalTitle.innerText = "تفعيل مسار التدريب الميداني";
+        //         modalIcon.innerHTML = '<i class="fas fa-lock" style="color: #eab308;"></i>';
+        //         submitBtn.innerText = "تحقق وتفعيل الكورس";
+        //     } else {
+        //         // 2. إبقاء المودال العادي للكورسات الأخرى
+        //         form.action = "{{ route('student.enroll') }}"; // مسار التسجيل الافتراضي القديم لديك
+        //         codeWrapper.style.display = 'none';
+        //         codeInput.required = false;
+        //         modalTitle.innerText = "تسجيل في الكورس";
+        //         modalIcon.innerHTML = '<i class="fas fa-graduation-cap"></i>';
+        //         submitBtn.innerText = "تأكيد التسجيل";
+        //     }
+
+        //     document.getElementById('enrollModal').style.display = 'flex';
+        // }
 
         function closeModal() {
             document.getElementById('enrollModal').style.display = 'none';
+            document.getElementById('accessCodeInput').value = ''; // تنظيف الحقل عند الإغلاق
         }
 
         window.onclick = function(event) {
@@ -539,8 +655,13 @@
             }
         }
 
+        // إشعارات النجاح أو الخطأ المريحة
         @if(session('success'))
-            Swal.fire('نجاح', '{{ session('success') }}', 'success');
+            Swal.fire({ icon: 'success', title: 'نجاح', text: '{{ session('success') }}', confirmButtonColor: '#bd5fff' });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({ icon: 'error', title: 'خطأ', text: '{{ session('error') }}', confirmButtonColor: '#bd5fff' });
         @endif
     </script>
 

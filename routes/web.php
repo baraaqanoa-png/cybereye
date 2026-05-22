@@ -235,7 +235,14 @@ Route::prefix('cms/course')->group(function(){
     Route::delete('comments/{comment}', [App\Http\Controllers\CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
     Route::post('/course/{id}/review', [App\Http\Controllers\CourseController::class, 'storeReview'])->name('course.review.store');
-});
+    Route::get('/course/{id}/player', [CourseController::class, 'player'])->name('course.player');
+    
+  // أضف {id} في الرابط لكي يستقبله الـ Controller
+Route::post('verify-internship/{id}', [CourseController::class, 'verifyInternship'])->name('course.internship.verify');
+})
+    
+    
+    ;
 
 // روابط إدارة الكورسات (للمدربين فقط)
 Route::prefix('cms/course')->middleware('auth:admin,instructor')->group(function(){

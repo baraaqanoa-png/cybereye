@@ -63,11 +63,14 @@ class User1 extends Authenticatable
 // }
 
 
+// public function student() {
+//     return $this->hasOne(Student::class);
+// }
+
 public function student() {
-    return $this->hasOne(Student::class);
+    // هنا نحدد صراحة أن العمود الرابط في جدول students هو 'user_id'
+    return $this->hasOne(Student::class, 'user_id', 'id');
 }
-
-
 // public function getGuardNameAttribute()
 // {
 //     if ($this->role === 'Admin') {
