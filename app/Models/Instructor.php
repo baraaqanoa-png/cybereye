@@ -25,8 +25,8 @@ class Instructor extends Model
         'experience_years',
         'rating',
         'bio',
-        'enrollment_date'
-
+        'enrollment_date',
+ 'linkedin_url',
     ];
 
 

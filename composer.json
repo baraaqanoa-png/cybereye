@@ -85,7 +85,8 @@
         },
         "audit": {
             "ignore": ["PKSA-5jz8-6tcw-pbk4"]
-        }
+        },
+        "process-timeout": 2000
     },
     "minimum-stability": "stable",
     "prefer-stable": true

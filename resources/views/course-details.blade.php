@@ -25,8 +25,8 @@
 
                 <div class="course-actions" style="margin-top: 2rem;">
                   <a href="{{ route('course.player', $course->id) }}" class="btn-primary">
-    <i class="fas fa-play-circle"></i> ابدأ الكورس الآن
-</a>
+                    <i class="fas fa-play-circle"></i> ابدأ الكورس الآن
+                  </a>
                 </div>
             </div>
         </section>
@@ -92,11 +92,11 @@
                                 <div class="review-item" style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.2rem; border: 1px solid #e2e8f0;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                                         <div style="display: flex; align-items: center; gap: 10px;">
-                                            {{-- عرض صورة الطالب أو أيقونة افتراضية --}}
                                             <div style="width: 40px; height: 40px; background: #4361ee; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                                 {{ Str::upper(Str::substr($review->student->user1->username ?? 'S', 0, 1)) }}
                                             </div>
-                                                <strong>{{ $review->user->username ?? 'طالب مجهول' }}</strong>                                        </div>
+                                            <strong>{{ $review->user->username ?? 'طالب مجهول' }}</strong>
+                                        </div>
                                         <div style="color: #ffc107; font-size: 0.9rem;">
                                             @for($i = 1; $i <= 5; $i++)
                                                 <i class="{{ $i <= $review->rating ? 'fas' : 'far' }} fa-star"></i>
@@ -121,9 +121,20 @@
                     </div>
                 </div>
 
+                {{-- ======================= الكولكشن الجانبي (السايدبار) ======================= --}}
                 <div class="course-sidebar">
                     <div class="instructor-card" style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 1.5rem;">
-                        <img src="{{ asset('storage/' . ($course->instructor->user1->profile_image ?? 'default.jpg')) }}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #4361ee;">
+                        {{-- <img src="{{ asset('storage/' . ($course->instructor->user1->profile_image ?? 'default.jpg')) }}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #4361ee;"> --}}
+
+    <div style="margin: 15px auto;">
+    <div style="background: #1e1e23; padding: 10px; border-radius: 16px; display: inline-block; box-shadow: 0 0 10px rgba(187,134,252,0.3);">
+        <img src="{{ $qrCodeUrl }}" alt="QR Code" style="width: 120px; height: 120px; border-radius: 12px;">
+    </div>
+    <p style="font-size: 11px; color: #bb86fc; margin-top: 8px; margin-bottom: 0;">
+        <i class="fas fa-qrcode"></i> اسحب للتواصل مع المدرب
+    </p>
+</div>
+
                         <h4 style="margin-top: 1rem;">{{ $course->instructor->user1->username }}</h4>
                         <p style="color: #64748b;">{{ $course->instructor->specialization ?? 'خبير أمن سيبراني' }}</p>
                     </div>
@@ -136,6 +147,7 @@
                         <div><i class="fas fa-certificate" style="color: #ffc107;"></i> شهادة إتمام معتمدة</div>
                     </div>
                 </div>
+                {{-- ================================================================= --}}
 
             </div>
         </div>
