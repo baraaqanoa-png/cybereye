@@ -175,8 +175,21 @@
     function showQuestion(index) {
         blocks.forEach((b, i) => b.style.display = i === index ? 'block' : 'none');
         prevBtn.disabled = (index === 0);
-        nextBtn.disabled = (index === total-1);
+
+        // إذا وصلنا للسؤال الأخير، أخفِ زر "التالي" وأظهر زر "إنهاء الامتحان"
+        if (index === total - 1) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+        } else {
+            nextBtn.style.display = 'inline-block';
+            submitBtn.style.display = 'none';
+        }
     }
+    // function showQuestion(index) {
+    //     blocks.forEach((b, i) => b.style.display = i === index ? 'block' : 'none');
+    //     prevBtn.disabled = (index === 0);
+    //     nextBtn.disabled = (index === total-1);
+    // }
     prevBtn.onclick = () => { if(current > 0) { current--; showQuestion(current); } };
     nextBtn.onclick = () => { if(current < total-1) { current++; showQuestion(current); } };
     showQuestion(0);
