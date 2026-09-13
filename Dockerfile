@@ -1,12 +1,14 @@
-FROM richarvey/nginx-php-fpm:3.1.6
+FROM serversideup/php:8.3-fpm-nginx
+
 COPY . /var/www/html
-ENV SKIP_COMPOSER=0
+
+USER root
+RUN chown -R www-data:www-data /var/www/html
+USER www-data
+
+# تحديد مسار الـ public الخاص بلاراول ليعمل Nginx بشكل صحيح
 ENV WEBROOT=/var/www/html/public
-ENV PHP_ERRORS_STDERR=1
-ENV RUN_SCRIPTS=1
-ENV REAL_IP_HEADER=1
 ENV APP_ENV=production
 ENV APP_DEBUG=false
-ENV LOG_CHANNEL=stderr
-ENV COMPOSER_ALLOW_SUPERUSER=1
-CMD ["/start.sh"]
+
+EXPOSE 8080
