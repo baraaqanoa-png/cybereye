@@ -22,7 +22,8 @@ class VideoController extends Controller
         $videos = Video::where('course_id', $courseId)
                        ->orderBy('order_number', 'asc')
                        ->get();
-        return view('cms.Video.index', compact('videos', 'courseId'));
+        // return view('cms.Video.index', compact('videos', 'courseId'));
+        return view('cms.video.index', compact('videos', 'courseId'));
     }
 
     public function player($courseId)
