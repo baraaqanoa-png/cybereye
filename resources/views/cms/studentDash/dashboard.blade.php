@@ -591,8 +591,7 @@
     document.getElementById('courseName').innerText = courseName;
 
     if (isInternship) {
-        // بدلاً من السطر القديم، اجعله هكذا:
-form.action = "/cms/course/verify-internship/" + courseId;
+        form.action = "/cms/course/verify-internship/" + courseId;
         codeWrapper.style.display = 'block';
         codeInput.required = true;
         modalTitle.innerText = "تفعيل مسار التدريب الميداني";
@@ -609,6 +608,36 @@ form.action = "/cms/course/verify-internship/" + courseId;
 
     document.getElementById('enrollModal').style.display = 'flex';
 }
+// function showEnrollModal(courseId, courseName, isInternship) {
+//     const form = document.getElementById('enrollForm');
+//     const codeWrapper = document.getElementById('accessCodeWrapper');
+//     const codeInput = document.getElementById('accessCodeInput');
+//     const modalTitle = document.getElementById('modalTitle');
+//     const modalIcon = document.getElementById('modalIcon');
+//     const submitBtn = document.getElementById('submitBtn');
+
+//     document.getElementById('courseId').value = courseId;
+//     document.getElementById('courseName').innerText = courseName;
+
+//     if (isInternship) {
+//         // بدلاً من السطر القديم، اجعله هكذا:
+// form.action = "/cms/course/verify-internship/" + courseId;
+//         codeWrapper.style.display = 'block';
+//         codeInput.required = true;
+//         modalTitle.innerText = "تفعيل مسار التدريب الميداني";
+//         modalIcon.innerHTML = '<i class="fas fa-lock" style="color: #eab308;"></i>';
+//         submitBtn.innerText = "تحقق وتفعيل الكورس";
+//     } else {
+//         form.action = "{{ route('student.enroll') }}";
+//         codeWrapper.style.display = 'none';
+//         codeInput.required = false;
+//         modalTitle.innerText = "تسجيل في الكورس";
+//         modalIcon.innerHTML = '<i class="fas fa-graduation-cap"></i>';
+//         submitBtn.innerText = "تأكيد التسجيل";
+//     }
+
+//     document.getElementById('enrollModal').style.display = 'flex';
+// }
         // تحديث الدالة لتستقبل معيار "هل الكورس تدريب ميداني؟"
         // function showEnrollModal(courseId, courseName, isInternship) {
         //     const form = document.getElementById('enrollForm');
