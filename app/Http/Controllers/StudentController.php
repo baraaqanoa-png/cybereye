@@ -102,7 +102,8 @@ class StudentController extends Controller
             ]);
 
             
-            $student->assignRole('student');  
+            $role = Role::firstOrCreate(['name' => 'student', 'guard_name' => 'student']);
+$student->assignRole($role);
 
             DB::commit();
 
@@ -243,6 +244,7 @@ class StudentController extends Controller
     {
         try {
             // البحث عن الطالب المحذوف
+            
             $student = Student::onlyTrashed()->findOrFail($id);
 
             // استعادة الطالب
