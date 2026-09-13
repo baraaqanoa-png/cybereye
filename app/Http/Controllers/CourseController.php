@@ -17,23 +17,82 @@ use chillerlan\QRCode\QROptions;
 class CourseController extends Controller
 {
     // عرض قائمة الكورسات (لم يتم تغيير هذه الدالة)
+    // public function index(Request $request)
+    // {
+    //     $user = null;
+    //     $isInstructor = false;
+    //     $isAdmin = false;
+    //     $isStudent = false;
+
+    //     if (auth('admin')->check()) {
+    //         $user = auth('admin')->user();
+    //         $isAdmin = true;
+    //     } elseif (auth('instructor')->check()) {
+    //         $user = auth('instructor')->user();
+    //         $isInstructor = true;
+    //     } elseif (auth('student')->check()) {
+    //         $user = auth('student')->user();
+    //         $isStudent = true;
+    //     }
+
+    //     $query = Course::with(['instructor.user1', 'category'])->withCount('students');
+
+    //     if ($isInstructor && $user) {
+    //         $instructorId = $user->actor_id;
+    //         $query->where('instructor_id', $instructorId);
+    //     }
+
+    //     if ($isStudent && $user) {
+    //         $studentId = $user->actor_id;
+    //         $query->whereHas('students', function($q) use ($studentId) {
+    //             $q->where('student_id', $studentId);
+    //         });
+    //     }
+
+    //     if ($request->has('category_id') && $request->category_id != '') {
+    //         $query->where('category_id', $request->category_id);
+    //     }
+
+    //     if ($request->has('search') && $request->search != '') {
+    //         $search = $request->search;
+    //         $query->where(function($q) use ($search) {
+    //             $q->where('course_name', 'like', '%' . $search . '%')
+    //               ->orWhereHas('instructor.user1', function($q2) use ($search) {
+    //                   $q2->where('username', 'like', '%' . $search . '%');
+    //               });
+    //         });
+    //     }
+
+    //     if ($isInstructor) {
+    //         $totalCourses = (clone $query)->count();
+    //         $activeCourses = (clone $query)->where('status', 'active')->count();
+    //         $totalInstructors = Instructor::count();
+    //     } elseif ($isStudent) {
+    //         $totalCourses = (clone $query)->count();
+    //         $activeCourses = (clone $query)->where('status', 'active')->count();
+    //         $totalInstructors = Instructor::count();
+    //     } else {
+    //         $totalCourses = Course::count();
+    //         $activeCourses = Course::where('status', 'active')->count();
+    //         $totalInstructors = Instructor::count();
+    //     }
+
+    //     $courses = $query->latest()->paginate(10)->appends($request->query());
+
+    //     return view('cms.course.index', compact(
+    //         'courses',
+    //         'totalCourses',
+    //         'activeCourses',
+    //         'totalInstructors'
+    //     ));
+    // }
+
     public function index(Request $request)
     {
-        $user = null;
-        $isInstructor = false;
-        $isAdmin = false;
-        $isStudent = false;
-
-        if (auth('admin')->check()) {
-            $user = auth('admin')->user();
-            $isAdmin = true;
-        } elseif (auth('instructor')->check()) {
-            $user = auth('instructor')->user();
-            $isInstructor = true;
-        } elseif (auth('student')->check()) {
-            $user = auth('student')->user();
-            $isStudent = true;
-        }
+        $user = auth()->user();
+        $isAdmin = $user && ($user->role == 'admin' || $user->role == 'super admin');
+        $isInstructor = $user && $user->role == 'instructor';
+        $isStudent = $user && $user->role == 'student';
 
         $query = Course::with(['instructor.user1', 'category'])->withCount('students');
 
@@ -63,11 +122,11 @@ class CourseController extends Controller
             });
         }
 
-        if ($isInstructor) {
+        if ($isInstructor && $user) {
             $totalCourses = (clone $query)->count();
             $activeCourses = (clone $query)->where('status', 'active')->count();
             $totalInstructors = Instructor::count();
-        } elseif ($isStudent) {
+        } elseif ($isStudent && $user) {
             $totalCourses = (clone $query)->count();
             $activeCourses = (clone $query)->where('status', 'active')->count();
             $totalInstructors = Instructor::count();
@@ -87,6 +146,7 @@ class CourseController extends Controller
         ));
     }
 
+    
     // إنشاء كورس جديد (لم يتغير)
     public function create()
     {
