@@ -1,3 +1,4 @@
+
 @extends('cms.home.parent')
 
 @section('title', 'CyberEye - Home')

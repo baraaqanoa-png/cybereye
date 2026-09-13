@@ -20,55 +20,75 @@ class UserAuthController extends Controller
            return  response()->view('cms.auth.login',compact('guard'));
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:user1s,email',
-            'password' => 'required',
-            'guard' => 'required|in:admin,student,instructor',
-        ]);
+//     public function login(Request $request)
+// {
+//     $request->validate([
+//         'email' => 'required|email|exists:user1s,email',
+//         'password' => 'required',
+//         'guard' => 'required|in:admin,student,instructor',
+//     ]);
+
+//     $guard = $request->guard;
     
-        $guard = $request->guard;
+//     // تسجيل الخروج من جميع الـ guards
+//     auth('admin')->logout();
+//     auth('student')->logout();
+//     auth('instructor')->logout();
+//     $request->session()->invalidate();
+//     $request->session()->regenerateToken();
+
+//     $credentials = [
+//         'email' => $request->email,
+//         'password' => $request->password,
+//     ];
+
+//     // ✅ جلب المستخدم
+//     $user = User1::where('email', $request->email)->first();
+    
+//     // ✅ إذا كان guard_name فارغ، قم بتعيينه بناءً على الـ guard المختار
+//     if($user && empty($user->guard_name)) {
+//         $user->guard_name = $guard;
+//         $user->save();
+//     }
+    
+//     // ✅ التحقق من تطابق الـ guard مع نوع الحساب
+//     if($user && $user->guard_name !== $guard) {
+//         // أعط رسالة أوضح
+//         $expectedGuard = $user->guard_name;
+//         $guardName = '';
+//         if($expectedGuard == 'student') $guardName = 'طالب';
+//         elseif($expectedGuard == 'instructor') $guardName = 'مدرب';
+//         elseif($expectedGuard == 'admin') $guardName = 'مدير';
         
-        // تسجيل الخروج من جميع الـ guards
-        auth('admin')->logout();
-        auth('student')->logout();
-        auth('instructor')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-    
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
-    
-        // ✅ التحقق من أن المستخدم لديه نفس الـ guard الذي اختاره
-        $user = User1::where('email', $request->email)->first();
+//         return response()->json([
+//             'icon' => 'error',
+//             'title' => "نوع الحساب غير صحيح! هذا الحساب مخصص لـ $guardName"
+//         ], 400);
+//     }
+
+//     if (Auth::guard($guard)->attempt($credentials)) {
+//         $user = Auth::guard($guard)->user();
         
-        if($user && $user->guard_name !== $guard) {
-            return response()->json([
-                'icon' => 'error',
-                'title' => 'نوع الحساب غير صحيح ' 
-            ], 400);
-        }
-    
-        if (Auth::guard($guard)->attempt($credentials)) {
-            $user = Auth::guard($guard)->user();
-            $user->guard_name = $guard;
-            $user->save();
-    
-            return response()->json([
-                'icon' => 'success',
-                'title' => 'تم تسجيل الدخول بنجاح',
-                'redirect' => '/cms/admin/main'
-            ]);
-        }
-    
-        return response()->json([
-            'icon' => 'error',
-            'title' => 'بيانات الدخول غير صحيحة'
-        ], 401);
-    }
+//         // تأكد من حفظ guard_name
+//         if($user->guard_name != $guard) {
+//             $user->guard_name = $guard;
+//             $user->save();
+//         }
+
+//         return response()->json([
+//             'icon' => 'success',
+//             'title' => 'تم تسجيل الدخول بنجاح',
+//             'redirect' => '/cms/admin/main'
+//         ]);
+//     }
+
+//     return response()->json([
+//         'icon' => 'error',
+//         'title' => 'بيانات الدخول غير صحيحة'
+//     ], 401);
+// }
+
+
     // public function login(Request $request)
     // {
     //     $request->validate([
@@ -78,51 +98,106 @@ class UserAuthController extends Controller
     //     ]);
     
     //     $guard = $request->guard;
+        
+    //     // تسجيل الخروج من جميع الـ guards
     //     auth('admin')->logout();
-    // auth('student')->logout();
-    // auth('instructor')->logout();
-    // $request->session()->invalidate();
-    // $request->session()->regenerateToken();
+    //     auth('student')->logout();
+    //     auth('instructor')->logout();
+    //     $request->session()->invalidate();
+    //     $request->session()->regenerateToken();
     
     //     $credentials = [
     //         'email' => $request->email,
     //         'password' => $request->password,
     //     ];
     
+    //     // ✅ التحقق من أن المستخدم لديه نفس الـ guard الذي اختاره
+    //     $user = User1::where('email', $request->email)->first();
+        
+    //     if($user && $user->guard_name !== $guard) {
+    //         return response()->json([
+    //             'icon' => 'error',
+    //             'title' => 'نوع الحساب غير صحيح ' 
+    //         ], 400);
+    //     }
+    
     //     if (Auth::guard($guard)->attempt($credentials)) {
     //         $user = Auth::guard($guard)->user();
     //         $user->guard_name = $guard;
     //         $user->save();
     
-    //         // التوجيه حسب الـ guard
-    //         $redirect = match($guard) {
-    //             'admin' => '/cms/admin/main',
-    //             'instructor' => '/cms/admin/main',
-    //             'student' => '/cms/admin/main',
-    //             default => '/',
-    //         };
-            
-    //     return response()->json([
-    //         'icon' => 'success',
-    //         'title' => 'login success',
-    //         'redirect' => $redirect
-    //     ]);
-    //     // if (Auth::guard($guard)->attempt($credentials)) {
-    
-    //     //     $request->session()->regenerate();
-    
-    //     //     return response()->json([
-    //     //         'icon' => 'success',
-    //     //         'title' => 'login success',
-    //     //         'redirect' => '/cms/'.$guard.'/main'
-    //     //     ]);
-    //     // }
+    //         return response()->json([
+    //             'icon' => 'success',
+    //             'title' => 'تم تسجيل الدخول بنجاح',
+    //             'redirect' => '/cms/admin/main'
+    //         ]);
+    //     }
     
     //     return response()->json([
     //         'icon' => 'error',
     //         'title' => 'بيانات الدخول غير صحيحة'
     //     ], 401);
-    // }}
+    // }
+
+
+
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:user1s,email',
+            'password' => 'required',
+            'guard' => 'required|in:admin,student,instructor',
+        ]);
+    
+        $guard = $request->guard;
+        auth('admin')->logout();
+    auth('student')->logout();
+    auth('instructor')->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+    
+        if (Auth::guard($guard)->attempt($credentials)) {
+            $user = Auth::guard($guard)->user();
+            $user->guard_name = $guard;
+            $user->save();
+    
+            // التوجيه حسب الـ guard
+            $redirect = match($guard) {
+                'admin' => '/cms/admin/main',
+                'instructor' => '/cms/admin/main',
+                'student' => '/cms/admin/main',
+                default => '/',
+            };
+            
+        return response()->json([
+            'icon' => 'success',
+            'title' => 'login success',
+            'redirect' => $redirect
+        ]);
+        // if (Auth::guard($guard)->attempt($credentials)) {
+    
+        //     $request->session()->regenerate();
+    
+        //     return response()->json([
+        //         'icon' => 'success',
+        //         'title' => 'login success',
+        //         'redirect' => '/cms/'.$guard.'/main'
+        //     ]);
+        // }
+    
+        return response()->json([
+            'icon' => 'error',
+            'title' => 'بيانات الدخول غير صحيحة'
+        ], 401);
+    }}
+
+
     // public function logout(Request  $request){
     //     $guard = auth('admin')->check() ? 'admin':'student';
     //     Auth::guard($guard)->logout();

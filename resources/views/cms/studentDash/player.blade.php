@@ -73,8 +73,7 @@
                 </div>
                 <div class="user-menu" style="position: relative;">
                     <a href="{{ route('student.dashboard') }}"><i class="fas fa-user-graduate"></i> كورساتي</a>
-                    <a href="{{ route('course.details', $course->id) }}"><i class="fas fa-info-circle"></i> تفاصيل الكورس</a
-                    {{-- زر الكويزات مع منطق JavaScript لفتح القائمة --}}
+                    <a href="{{ route('course.details', $course->id) }}"><i class="fas fa-info-circle"></i> تفاصيل الكورس</a>
                     @if(isset($course->quizzes) && $course->quizzes->count() > 0)
                         <div class="dropdown">
                             <button class="btn btn-gradient" onclick="toggleQuizMenu(event)" style="cursor: pointer;">
@@ -98,23 +97,6 @@
         </div>
     </header>
     
-    <script>
-        // دالة لفتح وإغلاق القائمة
-        function toggleQuizMenu(event) {
-            event.stopPropagation(); // منع إغلاق القائمة عند الضغط
-            const menu = document.getElementById('quizMenu');
-            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
-        }
-    
-        // إغلاق القائمة عند الضغط في أي مكان آخر
-        window.onclick = function(event) {
-            const menu = document.getElementById('quizMenu');
-            if (menu && menu.style.display === 'block') {
-                menu.style.display = 'none';
-            }
-        }
-    </script>
-
     <div class="container course-player-container">
         <aside class="sidebar">
             <div class="course-sidebar-header"><h3>{{ $course->course_name }}</h3></div>
@@ -135,7 +117,13 @@
                             <div class="lesson-info">
                                 <div class="lesson-title">{{ $video->title }}</div>
                             </div>
-                            <i class="fas fa-play-circle play-icon" onclick="playVideo({{ $video->id }}, '{{ addslashes($video->title) }}', '{{ addslashes($video->description) }}', '{{ asset($video->url) }}', this.parentElement)"></i>
+                            @php
+                                $videoUrl = $video->url;
+                                if($video->youtube_url) {
+                                    $videoUrl = $video->youtube_url;
+                                }
+                            @endphp
+                            <i class="fas fa-play-circle play-icon" onclick="playVideo({{ $video->id }}, '{{ addslashes($video->title) }}', '{{ addslashes($video->description) }}', '{{ $videoUrl }}', this.parentElement)"></i>
                         </div>
                         @endforeach
                     </div>
@@ -150,7 +138,10 @@
                     <i class="fas fa-play-circle fa-3x"></i>
                     <h3>اختر درساً للبدء</h3>
                 </div>
-                <video id="lessonVideo" controls><source src="" type="video/mp4"></video>
+                <video id="lessonVideo" controls style="display: none;">
+                    <source src="" type="video/mp4">
+                </video>
+                <iframe id="youtubeIframe" style="display: none; width: 100%; height: 400px; border-radius: 20px; border: none;"></iframe>
             </div>
             <div class="lesson-info-card">
                 <h1 class="lesson-title-main" id="currentLessonTitle">---</h1>
@@ -161,56 +152,99 @@
                 </div>
             </div>
 
-        
-                <div class="lesson-materials">
-                                        <h3>المواد التعليمية</h3>
-                                        <div class="materials-list">
-                                            @foreach($course->materials as $material)
-                                            <div class="material-item" onclick="downloadMaterial('{{ asset('storage/' . $material->file_path) }}')">
-                                                <div class="material-icon"><i class="fas fa-file-pdf fa-2x" style="color: #9333ea;"></i></div>
-                                                <div>
-                                                    <strong>{{ $material->title }}</strong>
-                                                    <p style="color: #aaa;">{{ $material->description ?? 'ملف تعليمي' }}</p>
-                                                </div>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-    <div class="modal" id="notesModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeNotesModal()">&times;</span>
-            <h2>ملاحظاتي</h2>
-            <textarea id="notesText" rows="8" placeholder="اكتب ملاحظاتك هنا..."></textarea>
-            <button class="action-btn" onclick="saveNotes()" style="margin-top: 15px;">حفظ الملاحظات</button>
-        </div>
-    </div>
-
+            <div class="lesson-materials">
+                <h3>المواد التعليمية</h3>
+                <div class="materials-list">
+                    @foreach($course->materials as $material)
+                    <div class="material-item" onclick="downloadMaterial('{{ asset('storage/' . $material->file_path) }}')">
+                        <div class="material-icon"><i class="fas fa-file-pdf fa-2x" style="color: #9333ea;"></i></div>
+                        <div>
+                            <strong>{{ $material->title }}</strong>
+                            <p style="color: #aaa;">{{ $material->description ?? 'ملف تعليمي' }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            
+            <div class="modal" id="notesModal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeNotesModal()">&times;</span>
+                    <h2>ملاحظاتي</h2>
+                    <textarea id="notesText" rows="8" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+                    <button class="action-btn" onclick="saveNotes()" style="margin-top: 15px;">حفظ الملاحظات</button>
+                </div>
+            </div>
         </main>
-        
     </div>
 
     <script>
         let videos = @json($course->videos);
         let currentVideoId = null;
 
+        function toggleQuizMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('quizMenu');
+            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
+        }
+
+        window.onclick = function(event) {
+            const menu = document.getElementById('quizMenu');
+            if (menu && menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
+        }
+
         function playVideo(id, title, description, url, element) {
             currentVideoId = id;
             document.getElementById('currentLessonTitle').innerText = title;
             document.getElementById('lessonDescription').innerText = description || 'لا يوجد وصف';
-            const video = document.getElementById('lessonVideo');
-            video.querySelector('source').src = url;
-            video.load();
-            document.getElementById('videoPlaceholder').style.display = 'none';
-            video.style.display = 'block';
-            video.play();
+            
+            const videoPlaceholder = document.getElementById('videoPlaceholder');
+            const videoElement = document.getElementById('lessonVideo');
+            const iframeElement = document.getElementById('youtubeIframe');
+            
+            const isYoutube = url.includes('youtube.com') || url.includes('youtu.be');
+            
+            if (isYoutube) {
+                let embedUrl = url;
+                if (url.includes('watch?v=')) {
+                    embedUrl = url.replace('watch?v=', 'embed/');
+                    embedUrl = embedUrl.split('&')[0];
+                } else if (url.includes('youtu.be/')) {
+                    embedUrl = url.replace('youtu.be/', 'youtube.com/embed/');
+                }
+                
+                videoElement.style.display = 'none';
+                iframeElement.src = embedUrl;
+                iframeElement.style.display = 'block';
+                videoPlaceholder.style.display = 'none';
+            } else {
+                iframeElement.style.display = 'none';
+                videoElement.querySelector('source').src = url;
+                videoElement.load();
+                videoPlaceholder.style.display = 'none';
+                videoElement.style.display = 'block';
+                videoElement.play();
+            }
+            
             document.querySelectorAll('.lesson-item').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
+            if (element) element.classList.add('active');
             localStorage.setItem('current_video_id', id);
         }
 
         function toggleModule(index) {
-            let el = document.getElementById('moduleLessons' + index);
-            el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+            let lessons = document.getElementById('moduleLessons' + index);
+            let icon = document.getElementById('moduleIcon' + index);
+            if (lessons.style.display === 'none') {
+                lessons.style.display = 'block';
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                lessons.style.display = 'none';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-left');
+            }
         }
 
         function previousLesson() {
@@ -218,24 +252,41 @@
             if (index > 0) {
                 let v = videos[index - 1];
                 let el = document.querySelector(`[data-video-id="${v.id}"]`);
-                playVideo(v.id, v.title, v.description, '{{ asset("") }}/' + v.url, el);
+                let url = v.youtube_url ? v.youtube_url : ('{{ asset("") }}/' + v.url);
+                playVideo(v.id, v.title, v.description, url, el);
             }
         }
 
-   
+        function nextLesson() {
+            if (!currentVideoId) { alert('الرجاء اختيار درس أولاً'); return; }
+            const videoIds = videos.map(v => v.id);
+            let index = videoIds.indexOf(currentVideoId);
+            if (index < videoIds.length-1 && index !== -1) {
+                let nextVideo = videos[index+1];
+                let element = document.querySelector(`.lesson-item[data-video-id="${nextVideo.id}"]`);
+                if (element) {
+                    let url = nextVideo.youtube_url ? nextVideo.youtube_url : ('{{ asset("") }}/' + nextVideo.url);
+                    playVideo(nextVideo.id, nextVideo.title, nextVideo.description, url, element);
+                }
+            } else { alert('هذا هو آخر درس'); }
+        }
 
-            function nextLesson() {
-            if (!currentVideoId) { alert('الرجاء اختيار درس أولاً'); return; }
-            const videoIds = videos.map(v => v.id);
-            let index = videoIds.indexOf(currentVideoId);
-            if (index < videoIds.length-1 && index !== -1) {
-                let nextVideo = videos[index+1];
-                let element = document.querySelector(`.lesson-item[data-video-id="${nextVideo.id}"]`);
-                if (element) {
-                    playVideo(nextVideo.id, nextVideo.title, nextVideo.description, '{{ asset("") }}' + '/' + nextVideo.url, element);
-                }
-            } else { alert('هذا هو آخر درس'); }
-        }
+        function takeNotes() {
+            let savedNotes = localStorage.getItem('course_notes_{{ $course->id }}') || '';
+            document.getElementById('notesText').value = savedNotes;
+            document.getElementById('notesModal').style.display = 'flex';
+        }
+
+        function closeNotesModal() { document.getElementById('notesModal').style.display = 'none'; }
+
+        function saveNotes() {
+            let notes = document.getElementById('notesText').value;
+            localStorage.setItem('course_notes_{{ $course->id }}', notes);
+            alert('تم حفظ الملاحظات');
+            closeNotesModal();
+        }
+
+        function downloadMaterial(url) { window.open(url, '_blank'); }
 
         document.addEventListener('DOMContentLoaded', function() {
             let savedVideoId = localStorage.getItem('current_video_id');
@@ -243,38 +294,11 @@
                 let video = videos.find(v => v.id == savedVideoId);
                 if (video) {
                     let el = document.querySelector(`[data-video-id="${video.id}"]`);
-                    if (el) playVideo(video.id, video.title, video.description, '{{ asset("") }}/' + video.url, el);
+                    let url = video.youtube_url ? video.youtube_url : ('{{ asset("") }}/' + video.url);
+                    if (el) playVideo(video.id, video.title, video.description, url, el);
                 }
             }
         });
-
-                function takeNotes() {
-            let savedNotes = localStorage.getItem('course_notes_{{ $course->id }}') || '';
-            document.getElementById('notesText').value = savedNotes;
-            document.getElementById('notesModal').style.display = 'flex';
-        }
-        function closeNotesModal() { document.getElementById('notesModal').style.display = 'none'; }
-        function saveNotes() {
-            let notes = document.getElementById('notesText').value;
-            localStorage.setItem('course_notes_{{ $course->id }}', notes);
-            alert('تم حفظ الملاحظات');
-            closeNotesModal();
-        }
-        function downloadMaterial(url) { window.open(url, '_blank'); }
-
-        function toggleModule(index) {
-            let lessons = document.getElementById('moduleLessons' + index);
-            let icon = document.getElementById('moduleIcon' + index);
-            if (lessons.style.display === 'none') {
-                lessons.style.display = 'block';
-                icon.classList.remove('fa-chevron-left');
-                icon.classList.add('fa-chevron-down');
-            } else {
-                lessons.style.display = 'none';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-left');
-            }
-        }
     </script>
 </body>
 </html>

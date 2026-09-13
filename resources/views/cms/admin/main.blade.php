@@ -11,6 +11,9 @@
 @endsection
 
 @section('content')
+@php
+    $jsNodesData = [];
+@endphp
 
 @if(auth('admin')->check())
 <!-- شريط الأدوات العلوي -->
@@ -593,6 +596,7 @@
             @endforelse
         </div>
     </div>
+
 </div>
 
 <script>
@@ -768,6 +772,65 @@ document.addEventListener('DOMContentLoaded', function() {
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
+
+
+<div class="todo-card-modern" style="margin-top: 30px; background: #111827; border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,255,204,0.03); font-family: 'Cairo', sans-serif; position: relative;">
+
+    <div id="toastContainer" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 450px; pointer-events: none;"></div>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 45px; height: 45px; background: rgba(0, 255, 204, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #00ffcc; font-size: 1.3rem;">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <div>
+                <h3 style="margin: 0; color: #00ffcc; font-weight: 800; font-size: 1.3rem;">قائمتي الذكية 🎯</h3>
+                <p style="color: #888; font-size: 0.8rem; margin: 2px 0 0 0;">رتّب مهامك السيبرانية وحقّق أهدافك اليومية!</p>
+            </div>
+        </div>
+        <div style="text-align: left;">
+            <span id="todoProgressText" style="font-size: 0.85rem; color: #00ffcc; font-weight: 700;">0% إنجاز</span>
+            <div style="width: 120px; background: rgba(255,255,255,0.05); height: 6px; border-radius: 10px; margin-top: 5px; overflow: hidden;">
+                <div id="todoProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #00ffcc, #00cc88); transition: width 0.4s ease; border-radius: 10px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <input type="text" id="todoInput" placeholder="مثال: مراجعة درس التشفير، حل اللاب العملي..."
+               style="flex: 1; padding: 12px 18px; background: rgba(0,0,0,0.3); border: 1px solid rgba(0,255,204,0.15); border-radius: 12px; color: white; font-size: 0.95rem; outline: none; transition: border 0.3s;"
+               onfocus="this.style.borderColor='#00ffcc'" onblur="this.style.borderColor='rgba(0,255,204,0.15)'">
+
+        <button onclick="openDeadlineModal()" style="background: linear-gradient(135deg, #00cc88, #009966); color: white; border: none; border-radius: 12px; padding: 0 25px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <i class="fas fa-plus"></i> إضافة
+        </button>
+    </div>
+
+    <div id="todoListContainer" style="display: flex; flex-direction: column; gap: 12px;">
+        <div id="todoEmptyState" style="text-align: center; padding: 30px; color: #555;">
+            <i class="clipboard-icon fas fa-clipboard" style="font-size: 2.2rem; margin-bottom: 12px; display: block; color: rgba(0,255,204,0.15);"></i>
+            لا يوجد مهام حالياً.. أضف أول مهمة لك! 🎉
+        </div>
+    </div>
+
+    <div id="deadlineModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: #1f2937; border: 1px solid #00ffcc; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,255,204,0.15); text-align: center;">
+            <div style="width: 50px; height: 50px; background: rgba(0, 255, 204, 0.1); border-radius: 50px; display: flex; align-items: center; justify-content: center; color: #00ffcc; margin: 0 auto 15px auto; font-size: 1.4rem;">
+                <i class="far fa-calendar-alt"></i>
+            </div>
+            <h4 style="margin: 0 0 8px 0; color: #fff; font-weight: 700;">تحديد موعد الاستحقاق 🕒</h4>
+            <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 20px;" id="modalTaskTitle">المهمة: </p>
+
+            <input type="datetime-local" id="todoDeadline"
+                   style="width: 100%; padding: 12px; background: #111827; border: 1px solid rgba(0,255,204,0.3); border-radius: 10px; color: #fff; font-size: 0.95rem; outline: none; margin-bottom: 20px; text-align: center; font-family: 'Cairo', sans-serif;">
+
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="submitTodoWithDeadline()" style="background: linear-gradient(135deg, #00ffcc, #00b3ff); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1;">حفظ وإضافة</button>
+                <button onclick="submitTodoWithoutDeadline()" style="background: rgba(255,255,255,0.05); color: #ccc; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 10px; cursor: pointer; flex: 1;">بدون ديدلاين</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endif
 
 
@@ -804,7 +867,415 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
 <script>
+    function sendMessage() {
+        let input = document.getElementById('chatInput');
+        let message = input.value.trim();
+        if (!message) return;
+
+        addMessage(message, 'user');
+        input.value = '';
+        showTypingIndicator();
+
+        fetch('{{ route("ai.chat") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            removeTypingIndicator();
+            if (data.success) {
+                addMessage(data.message, 'ai');
+            } else {
+                addMessage('عذراً، حدث خطأ: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            removeTypingIndicator();
+            addMessage('عذراً، حدث خطأ في الاتصال', 'error');
+        });
+    }
+
+    function addMessage(text, type) {
+        let chat = document.getElementById('chatMessages');
+        let messageDiv = document.createElement('div');
+        messageDiv.style.marginBottom = '15px';
+
+        let content = '';
+        if (type === 'user') {
+            content = `
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <div style="background: #4361ee; color: white; padding: 12px 18px; border-radius: 18px 18px 5px 18px; max-width: 80%;">
+                        <p style="margin: 0;">${text}</p>
+                    </div>
+                    <div style="background: #6c757d; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            `;
+        } else if (type === 'ai') {
+            content = `
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <div style="background: #4361ee; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div style="background: white; padding: 12px 18px; border-radius: 18px 18px 18px 5px; max-width: 80%; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                        <p style="margin: 0; color: #1e293b;">${text}</p>
+                    </div>
+                </div>
+            `;
+        } else {
+            content = `
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <div style="background: #dc3545; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div style="background: #f8d7da; padding: 12px 18px; border-radius: 18px; max-width: 80%; color: #721c24;">
+                        <p style="margin: 0;">${text}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        messageDiv.innerHTML = content;
+        chat.appendChild(messageDiv);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        let chat = document.getElementById('chatMessages');
+        let typingDiv = document.createElement('div');
+        typingDiv.id = 'typingIndicator';
+        typingDiv.style.marginBottom = '15px';
+        typingDiv.innerHTML = `
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="background: #4361ee; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div style="background: white; padding: 12px 18px; border-radius: 18px 18px 18px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <p style="margin: 0; color: #1e293b;">يكتب...</p>
+                </div>
+            </div>
+        `;
+        chat.appendChild(typingDiv);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        let indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+    
+    @if(auth('admin')->check())
+    // بيانات الرسم البياني
+    const weeklyLabels = @json($weeklyRegistrations['labels']);
+    const weeklyStudents = @json($weeklyRegistrations['students']);
+    const weeklyInstructors = @json($weeklyRegistrations['instructors']);
+    const weeklyAdmins = @json($weeklyRegistrations['admins']);
+
+    const monthlyLabels = @json($monthlyRegistrations['labels']);
+    const monthlyStudents = @json($monthlyRegistrations['students']);
+    const monthlyInstructors = @json($monthlyRegistrations['instructors']);
+    const monthlyAdmins = @json($monthlyRegistrations['admins']);
+
+    let registrationsChart;
+
+    function initChart(type = 'weekly') {
+        const ctx = document.getElementById('registrationsChart').getContext('2d');
+        if (registrationsChart) registrationsChart.destroy();
+
+        const labels = type === 'weekly' ? weeklyLabels : monthlyLabels;
+        const studentsData = type === 'weekly' ? weeklyStudents : monthlyStudents;
+        const instructorsData = type === 'weekly' ? weeklyInstructors : monthlyInstructors;
+        const adminsData = type === 'weekly' ? weeklyAdmins : monthlyAdmins;
+
+        registrationsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'الطلاب', data: studentsData, backgroundColor: '#ff4757', borderRadius: 6 },
+                    { label: 'المدربين', data: instructorsData, backgroundColor: '#2c3e50', borderRadius: 6 },
+                    { label: 'المشرفين', data: adminsData, backgroundColor: '#2ecc71', borderRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', rtl: true, labels: { color: '#e0e0e0' } },
+                    tooltip: { backgroundColor: '#1a1f2e', titleColor: '#00ffcc' }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#e0e0e0', stepSize: 1 } },
+                    x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#e0e0e0' } }
+                }
+            }
+        });
+    }
+
+    document.querySelectorAll('.period-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            initChart(this.textContent.includes('أسبوعي') ? 'weekly' : 'monthly');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => initChart('weekly'));
+
+    // إشعارات
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('notificationButton');
+        const menu = document.getElementById('notificationMenu');
+        const badge = btn ? btn.querySelector('.navbar-badge') : null;
+
+        if (btn && menu) {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (menu.style.display === 'none' || menu.style.display === '') {
+                    menu.style.display = 'block';
+
+                    if (badge) {
+                        badge.style.display = 'none';
+                        fetch('{{ route("markNotificationRead") }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            }
+                        }).catch(error => console.error('Error marking notifications read:', error));
+                    }
+                } else {
+                    menu.style.display = 'none';
+                }
+            };
+
+            document.onclick = function(e) {
+                if (menu && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    menu.style.display = 'none';
+                }
+            };
+        }
+    });
+
+    function performDestroy(id, element) {
+        if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
+            console.log('Delete student with id: ' + id);
+        }
+    }
+
+    function confirmDelete(id, element) {
+        if (confirm('هل أنت متأكد من حذف هذا الكورس؟')) {
+            console.log('Delete course with id: ' + id);
+        }
+    }
+    @endif
+
+    @if(auth('student')->check())
+    // ============================================
+    // كود TODO LIST - خاص بالطلاب فقط
+    // ============================================
+    const motivationalPhrases = [
+        "كفو يا بطل! خطوة أخرى نحو احتراف الـ Cyber Security! 🛡️",
+        "رائع جداً! استمر في إبهارنا بطاقتك وإنجازك! 🌟",
+        "أنت تصنع المستحيل اليوم! فخورين فيك 🚀",
+        "عاش! تقفيل المهام لعبتك المفضلة 🎯",
+        "أقوى هكر أخلاقي بالكون جالس ينجز مهامه الآن! 💻✨",
+        "مستواك في تصاعد مستمر، استمر يا ذكي! 🏆",
+        "مهمة تلو الأخرى.. هكذا تُبنى الإمبراطوريات الدراسية 🎓"
+    ];
+
+    function showCelebrationToast() {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const randomIndex = Math.floor(Math.random() * motivationalPhrases.length);
+        const phrase = motivationalPhrases[randomIndex];
+        const toast = document.createElement('div');
+        toast.style.cssText = `background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95)); border: 2px solid #00ffcc; border-radius: 14px; padding: 16px 20px; color: #fff; font-weight: 600; font-size: 0.95rem; box-shadow: 0 10px 30px rgba(0, 255, 204, 0.25); display: flex; align-items: center; gap: 12px; pointer-events: auto; transform: translateY(-50px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);`;
+        toast.innerHTML = `<div style="width: 32px; height: 32px; background: rgba(0,255,204,0.15); border-radius: 50px; display: flex; align-items: center; justify-content: center; color: #00ffcc; font-size: 1.1rem; flex-shrink: 0;"><i class="fas fa-trophy"></i></div><div style="flex: 1; line-height: 1.4; text-align: right;">${phrase}</div>`;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.transform = 'translateY(0)'; toast.style.opacity = '1'; }, 50);
+        setTimeout(() => {
+            toast.style.transform = 'translateY(-20px) scale(0.9)';
+            toast.style.opacity = '0';
+            setTimeout(() => { toast.remove(); }, 400);
+        }, 4000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('todoListContainer')) {
+            loadTodoItems();
+        }
+    });
+
+    window.openDeadlineModal = function() {
+        const input = document.getElementById('todoInput');
+        if(!input) return;
+        const title = input.value.trim();
+        if (!title) return;
+        const modalTitle = document.getElementById('modalTaskTitle');
+        const modal = document.getElementById('deadlineModal');
+        if(modalTitle) modalTitle.innerText = `المهمة: "${title}"`;
+        if(modal) modal.style.display = 'flex';
+    }
+
+    window.submitTodoWithDeadline = function() {
+        const deadlineInput = document.getElementById('todoDeadline');
+        const dueDate = deadlineInput ? deadlineInput.value : '';
+        const modal = document.getElementById('deadlineModal');
+        if(modal) modal.style.display = 'none';
+        executeSavingProcess(dueDate);
+    }
+
+    window.submitTodoWithoutDeadline = function() {
+        const modal = document.getElementById('deadlineModal');
+        if(modal) modal.style.display = 'none';
+        executeSavingProcess('');
+    }
+
+    function executeSavingProcess(dueDate) {
+        const input = document.getElementById('todoInput');
+        if(!input) return;
+        const title = input.value.trim();
+        if (!title) return;
+
+        fetch('/cms/student/todos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ title: title, due_date: dueDate ? dueDate : null })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(input) input.value = '';
+            const deadlineInput = document.getElementById('todoDeadline');
+            if(deadlineInput) deadlineInput.value = '';
+            loadTodoItems();
+        })
+        .catch(error => console.error('خطأ في الإرسال:', error));
+    }
+
+    function loadTodoItems() {
+        fetch('/cms/student/todos')
+            .then(response => response.json())
+            .then(todos => {
+                const container = document.getElementById('todoListContainer');
+                if (!container) return;
+                container.innerHTML = '';
+                if (todos.length === 0) {
+                    container.innerHTML = `<div id="todoEmptyState" style="text-align: center; padding: 30px; color: #555;"><i class="clipboard-icon fas fa-clipboard" style="font-size: 2.2rem; margin-bottom: 12px; display: block; color: rgba(0,255,204,0.15);"></i>لا يوجد مهام حالياً.. أضف أول مهمة لك! 🎉</div>`;
+                    updateProgress(0, 0);
+                    return;
+                }
+                let completedCount = 0;
+                todos.forEach(todo => {
+                    if (todo.is_completed || todo.is_completed == 1) completedCount++;
+                    renderTodoItem(todo);
+                });
+                updateProgress(todos.length, completedCount);
+            })
+            .catch(error => console.error('خطأ في تحميل المهام:', error));
+    }
+
+    function formatDeadlineBadge(dateString) {
+        if (!dateString) return `<span style="color: #64748b; font-size: 0.8rem;"><i class="far fa-clock"></i> بدون ديدلاين</span>`;
+        const now = new Date();
+        const deadline = new Date(dateString);
+        if (isNaN(deadline.getTime())) return `<span style="color: #64748b; font-size: 0.8rem;"><i class="far fa-clock"></i> بدون ديدلاين</span>`;
+        const diffMs = deadline - now;
+        const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+        const readableDate = deadline.toLocaleDateString('ar-EG', options);
+        if (diffMs < 0) {
+            return `<span style="color: #ef4444; font-size: 0.78rem; background: rgba(239, 68, 68, 0.08); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(239, 68, 68, 0.15);"><i class="fas fa-exclamation-circle"></i> متأخرة (${readableDate})</span>`;
+        }
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        if (diffHours < 24) {
+            return `<span style="color: #f59e0b; font-size: 0.78rem; background: rgba(245, 158, 11, 0.08); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(245, 158, 11, 0.15);"><i class="far fa-clock"></i> متبقي ${diffHours} س</span>`;
+        }
+        return `<span style="color: #00b3ff; font-size: 0.78rem; background: rgba(0, 179, 255, 0.08); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(0, 179, 255, 0.15);"><i class="far fa-calendar-alt"></i> ${readableDate}</span>`;
+    }
+
+    function renderTodoItem(todo) {
+        const container = document.getElementById('todoListContainer');
+        if (!container) return;
+        const itemDiv = document.createElement('div');
+        itemDiv.id = `todo-item-${todo.id}`;
+        const isDone = todo.is_completed || todo.is_completed == 1;
+        const dateField = todo.due_date || todo.deadline || null;
+        const badgeHTML = formatDeadlineBadge(dateField);
+        itemDiv.style.cssText = `display: flex; align-items: center; justify-content: space-between; background: ${isDone ? 'rgba(0, 255, 204, 0.01)' : 'rgba(30, 41, 59, 0.3)'}; border: 1px solid ${isDone ? 'rgba(0, 255, 204, 0.08)' : 'rgba(255,255,255,0.06)'}; padding: 14px 18px; border-radius: 14px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);`;
+        if (isDone) itemDiv.style.opacity = '0.55';
+        itemDiv.innerHTML = `<div style="display: flex; align-items: center; gap: 14px; flex: 1;"><input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleTodoStatus(${todo.id}, this)" style="width: 20px; height: 20px; accent-color: #00ffcc; cursor: pointer; border-radius: 5px;"><div style="display: flex; flex-direction: column; gap: 5px;"><span style="color: ${isDone ? '#64748b' : '#f1f5f9'}; text-decoration: ${isDone ? 'line-through' : 'none'}; font-size: 0.95rem; font-weight: 500; transition: all 0.3s;">${todo.title}</span><div style="display: flex;">${badgeHTML}</div></div></div><button onclick="deleteTodoItem(${todo.id})" style="background: transparent; border: none; color: rgba(239, 68, 68, 0.6); cursor: pointer; padding: 6px 10px; border-radius: 8px; font-size: 0.95rem; transition: all 0.2s;" onmouseover="this.style.color='#ef4444'; this.style.background='rgba(239, 68, 68, 0.05)';" onmouseout="this.style.color='rgba(239, 68, 68, 0.6)'; this.style.background='transparent';"><i class="far fa-trash-alt"></i></button>`;
+        container.appendChild(itemDiv);
+    }
+
+    window.toggleTodoStatus = function(id, checkbox) {
+        const isCompleted = checkbox.checked ? 1 : 0;
+        const itemWrapper = document.getElementById(`todo-item-${id}`);
+        if (checkbox.checked) {
+            if (itemWrapper) { itemWrapper.style.opacity = '0.55'; itemWrapper.style.background = 'rgba(0, 255, 204, 0.01)'; itemWrapper.style.borderColor = 'rgba(0, 255, 204, 0.08)'; }
+            showCelebrationToast();
+        } else {
+            if (itemWrapper) { itemWrapper.style.opacity = '1'; itemWrapper.style.background = 'rgba(30, 41, 59, 0.3)'; itemWrapper.style.borderColor = 'rgba(255,255,255,0.06)'; }
+        }
+        recalculateProgressDirectly();
+        fetch(`/cms/student/todos/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: JSON.stringify({ is_completed: isCompleted })
+        }).catch(error => console.error('خطأ في التحديث:', error));
+    }
+
+    function recalculateProgressDirectly() {
+        const allCheckboxes = document.querySelectorAll('#todoListContainer input[type="checkbox"]');
+        const checkedBoxes = document.querySelectorAll('#todoListContainer input[type="checkbox"]:checked');
+        updateProgress(allCheckboxes.length, checkedBoxes.length);
+    }
+
+    window.deleteTodoItem = function(id) {
+        if(!confirm('هل تريد حذف هذه المهمة؟')) return;
+        const element = document.getElementById(`todo-item-${id}`);
+        if(element) {
+            element.style.transform = 'scale(0.92)';
+            element.style.opacity = '0';
+            setTimeout(() => {
+                element.remove();
+                recalculateProgressDirectly();
+            }, 200);
+        }
+        fetch(`/cms/student/todos/${id}`, {
+            method: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+        }).catch(error => console.error('خطأ في الحذف:', error));
+    }
+
+    function updateProgress(total, completed) {
+        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const progressBar = document.getElementById('todoProgressBar');
+        const progressText = document.getElementById('todoProgressText');
+        if (progressBar) progressBar.style.width = `${percentage}%`;
+        if (progressText) progressText.innerText = `${percentage}% إنجاز`;
+    }
+    @endif
+</script>
+
+{{-- <script>
     function sendMessage() {
         let input = document.getElementById('chatInput');
         let message = input.value.trim();
@@ -1020,5 +1491,282 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     @endif
-</script>
+
+
+
+
+    
+</script> --}}
+
+{{-- <script>
+    const motivationalPhrases = [
+    "كفو يا بطل! خطوة أخرى نحو احتراف الـ Cyber Security! 🛡️",
+    "رائع جداً! استمر في إبهارنا بطاقتك وإنجازك! 🌟",
+    "أنت تصنع المستحيل اليوم! فخورين فيك 🚀",
+    "عاش! تقفيل المهام لعبتك المفضلة 🎯",
+    "أقوى هكر أخلاقي بالكون جالس ينجز مهامه الآن! 💻✨",
+    "مستواك في تصاعد مستمر، استمر يا ذكي! 🏆",
+    "مهمة تلو الأخرى.. هكذا تُبنى الإمبراطوريات الدراسية 🎓"
+];
+
+function showCelebrationToast() {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    const randomIndex = Math.floor(Math.random() * motivationalPhrases.length);
+    const phrase = motivationalPhrases[randomIndex];
+
+    const toast = document.createElement('div');
+    toast.style = `
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+        border: 2px solid #00ffcc;
+        border-radius: 14px;
+        padding: 16px 20px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 10px 30px rgba(0, 255, 204, 0.25);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        pointer-events: auto;
+        transform: translateY(-50px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    `;
+
+    toast.innerHTML = `
+        <div style="width: 32px; height: 32px; background: rgba(0,255,204,0.15); border-radius: 50px; display: flex; align-items: center; justify-content: center; color: #00ffcc; font-size: 1.1rem; flex-shrink: 0;">
+            <i class="fas fa-trophy"></i>
+        </div>
+        <div style="flex: 1; line-height: 1.4; text-align: right;">${phrase}</div>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.transform = 'translateY(0)';
+        toast.style.opacity = '1';
+    }, 50);
+
+    setTimeout(() => {
+        toast.style.transform = 'translateY(-20px) scale(0.9)';
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            toast.remove();
+        }, 400);
+    }, 4000);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadTodoItems();
+});
+
+function openDeadlineModal() {
+    const input = document.getElementById('todoInput');
+    const title = input.value.trim();
+    if (!title) return;
+
+    document.getElementById('modalTaskTitle').innerText = `المهمة: "${title}"`;
+    document.getElementById('deadlineModal').style.display = 'flex';
+}
+
+function submitTodoWithDeadline() {
+    const deadlineInput = document.getElementById('todoDeadline');
+    const dueDate = deadlineInput.value;
+
+    document.getElementById('deadlineModal').style.display = 'none';
+    executeSavingProcess(dueDate);
+}
+
+function submitTodoWithoutDeadline() {
+    document.getElementById('deadlineModal').style.display = 'none';
+    executeSavingProcess('');
+}
+
+function executeSavingProcess(dueDate) {
+    const input = document.getElementById('todoInput');
+    const title = input.value.trim();
+    if (!title) return;
+
+    fetch('/cms/student/todos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            title: title,
+            due_date: dueDate ? dueDate : null
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        input.value = '';
+        document.getElementById('todoDeadline').value = '';
+        loadTodoItems();
+    })
+    .catch(error => console.error('خطأ في الإرسال:', error));
+}
+
+function loadTodoItems() {
+    fetch('/cms/student/todos')
+        .then(response => response.json())
+        .then(todos => {
+            const container = document.getElementById('todoListContainer');
+            container.innerHTML = '';
+
+            if (todos.length === 0) {
+                container.innerHTML = `
+                    <div id="todoEmptyState" style="text-align: center; padding: 30px; color: #555;">
+                        <i class="clipboard-icon fas fa-clipboard" style="font-size: 2.2rem; margin-bottom: 12px; display: block; color: rgba(0,255,204,0.15);"></i>
+                        لا يوجد مهام حالياً.. أضف أول مهمة لك! 🎉
+                    </div>`;
+                updateProgress(0, 0);
+                return;
+            }
+
+            let completedCount = 0;
+            todos.forEach(todo => {
+                if (todo.is_completed || todo.is_completed == 1) completedCount++;
+                renderTodoItem(todo);
+            });
+
+            updateProgress(todos.length, completedCount);
+        })
+        .catch(error => console.error('خطأ في تحميل المهام:', error));
+}
+
+function formatDeadlineBadge(dateString) {
+    if (!dateString) return `<span style="color: #64748b; font-size: 0.8rem;"><i class="far fa-clock"></i> بدون ديدلاين</span>`;
+
+    const now = new Date();
+    const deadline = new Date(dateString);
+
+    if (isNaN(deadline.getTime())) return `<span style="color: #64748b; font-size: 0.8rem;"><i class="far fa-clock"></i> بدون ديدلاين</span>`;
+
+    const diffMs = deadline - now;
+    const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+    const readableDate = deadline.toLocaleDateString('ar-EG', options);
+
+    if (diffMs < 0) {
+        return `<span style="color: #ef4444; font-size: 0.78rem; background: rgba(239, 68, 68, 0.08); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(239, 68, 68, 0.15);"><i class="fas fa-exclamation-circle"></i> متأخرة (${readableDate})</span>`;
+    }
+
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    if (diffHours < 24) {
+        return `<span style="color: #f59e0b; font-size: 0.78rem; background: rgba(245, 158, 11, 0.08); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(245, 158, 11, 0.15);"><i class="far fa-clock"></i> متبقي ${diffHours} س</span>`;
+    }
+
+    return `<span style="color: #00b3ff; font-size: 0.78rem; background: rgba(0, 179, 255, 0.08); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(0, 179, 255, 0.15);"><i class="far fa-calendar-alt"></i> ${readableDate}</span>`;
+}
+
+function renderTodoItem(todo) {
+    const container = document.getElementById('todoListContainer');
+    const itemDiv = document.createElement('div');
+    itemDiv.id = `todo-item-${todo.id}`;
+
+    const isDone = todo.is_completed || todo.is_completed == 1;
+    const dateField = todo.due_date || todo.deadline || null;
+    const badgeHTML = formatDeadlineBadge(dateField);
+
+    itemDiv.style = `
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: ${isDone ? 'rgba(0, 255, 204, 0.01)' : 'rgba(30, 41, 59, 0.3)'};
+        border: 1px solid ${isDone ? 'rgba(0, 255, 204, 0.08)' : 'rgba(255,255,255,0.06)'};
+        padding: 14px 18px;
+        border-radius: 14px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+    if (isDone) itemDiv.style.opacity = '0.55';
+
+    itemDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 14px; flex: 1;">
+            <input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleTodoStatus(${todo.id}, this)"
+                   style="width: 20px; height: 20px; accent-color: #00ffcc; cursor: pointer; border-radius: 5px;">
+
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span style="color: ${isDone ? '#64748b' : '#f1f5f9'}; text-decoration: ${isDone ? 'line-through' : 'none'}; font-size: 0.95rem; font-weight: 500; transition: all 0.3s;">
+                    ${todo.title}
+                </span>
+                <div style="display: flex;">
+                    ${badgeHTML}
+                </div>
+            </div>
+        </div>
+
+        <button onclick="deleteTodoItem(${todo.id})"
+                style="background: transparent; border: none; color: rgba(239, 68, 68, 0.6); cursor: pointer; padding: 6px 10px; border-radius: 8px; font-size: 0.95rem; transition: all 0.2s;"
+                onmouseover="this.style.color='#ef4444'; this.style.background='rgba(239, 68, 68, 0.05)';"
+                onmouseout="this.style.color='rgba(239, 68, 68, 0.6)'; this.style.background='transparent';">
+            <i class="far fa-trash-alt"></i>
+        </button>
+    `;
+    container.appendChild(itemDiv);
+}
+
+function toggleTodoStatus(id, checkbox) {
+    const isCompleted = checkbox.checked ? 1 : 0;
+    const itemText = checkbox.nextElementSibling.querySelector('span');
+    const itemWrapper = document.getElementById(`todo-item-${id}`);
+
+    if (checkbox.checked) {
+        if (itemText) { itemText.style.textDecoration = 'line-through'; itemText.style.color = '#64748b'; }
+        if (itemWrapper) { itemWrapper.style.opacity = '0.55'; itemWrapper.style.background = 'rgba(0, 255, 204, 0.01)'; itemWrapper.style.borderColor = 'rgba(0, 255, 204, 0.08)'; }
+
+        showCelebrationToast();
+    } else {
+        if (itemText) { itemText.style.textDecoration = 'none'; itemText.style.color = '#f1f5f9'; }
+        if (itemWrapper) { itemWrapper.style.opacity = '1'; itemWrapper.style.background = 'rgba(30, 41, 59, 0.3)'; itemWrapper.style.borderColor = 'rgba(255,255,255,0.06)'; }
+    }
+
+    recalculateProgressDirectly();
+
+    fetch(`/cms/student/todos/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ is_completed: isCompleted })
+    })
+    .catch(error => console.error('خطأ في التحديث:', error));
+}
+
+function recalculateProgressDirectly() {
+    const allCheckboxes = document.querySelectorAll('#todoListContainer input[type="checkbox"]');
+    const checkedBoxes = document.querySelectorAll('#todoListContainer input[type="checkbox"]:checked');
+    updateProgress(allCheckboxes.length, checkedBoxes.length);
+}
+
+function deleteTodoItem(id) {
+    if(!confirm('هل تريد حذف هذه المهمة؟')) return;
+
+    const element = document.getElementById(`todo-item-${id}`);
+    if(element) {
+        element.style.transform = 'scale(0.92)';
+        element.style.opacity = '0';
+        setTimeout(() => {
+            element.remove();
+            recalculateProgressDirectly();
+        }, 200);
+    }
+
+    fetch(`/cms/student/todos/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .catch(error => console.error('خطأ في الحذف:', error));
+}
+
+function updateProgress(total, completed) {
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+    document.getElementById('todoProgressBar').style.width = `${percentage}%`;
+    document.getElementById('todoProgressText').innerText = `${percentage}% إنجاز`;
+}
+</script> --}}
 @endsection

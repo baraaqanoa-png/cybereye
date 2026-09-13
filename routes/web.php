@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User1Controller;
 use App\Http\Controllers\StudentController;
@@ -122,6 +123,10 @@ Route::prefix('cms/student')->group(function(){
 
     Route::resource('students', StudentController::class);
     Route::resource('users', User1Controller::class);
+    Route::get('/todos', [TodoController::class, 'index']);
+    Route::post('/todos', [TodoController::class, 'store']);
+    Route::put('/todos/{todo}', [TodoController::class, 'update']);
+    Route::delete('/todos/{todo}', [TodoController::class, 'destroy']);
 
 });
 
