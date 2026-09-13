@@ -219,127 +219,62 @@ public function forceDelete($id)
      * حفظ إجابات الطالب والنتيجة – بدون تسجيل دخول (يستخدم student_id = 1).
      */
 
-
      public function submit(Request $request, $quizzId)
-    {
-        $student = auth('student')->user()->actor;
-        $studentId = $student->id;
+{
+    // ✅ جلب الطالب المسجل حالياً
+    $user = auth('student')->user();
+        $studentId = $user->id;
+    
+    $quiz = Quizz::with('questions')->findOrFail($quizzId);
+    $answers = $request->input('answers', []);
+    
+    DB::beginTransaction();
+    try {
+        $totalPoints = 0;
+        $earnedPoints = 0;
         
-        $quiz = Quizz::with('questions')->findOrFail($quizzId);
-        $answers = $request->input('answers', []);
-        
-        DB::beginTransaction();
-        try {
-            $totalPoints = 0;
-            $earnedPoints = 0;
+        foreach ($quiz->questions as $question) {
+            $userAnswer = $answers[$question->id] ?? null;
+            $isCorrect = ($userAnswer === $question->correct_answer);
+            $pointsEarned = $isCorrect ? $question->points : 0;
+            $totalPoints += $question->points;
+            $earnedPoints += $pointsEarned;
             
-            foreach ($quiz->questions as $question) {
-                $userAnswer = $answers[$question->id] ?? null;
-                $isCorrect = ($userAnswer === $question->correct_answer);
-                $pointsEarned = $isCorrect ? $question->points : 0;
-                $totalPoints += $question->points;
-                $earnedPoints += $pointsEarned;
-                
-                StudentAnswer::updateOrCreate(
-                    [
-                        'student_id' => $studentId,
-                        'quizz_id' => $quiz->id,
-                        'question_id' => $question->id,
-                    ],
-                    [
-                        'answer' => $userAnswer,
-                        'is_correct' => $isCorrect,
-                        'points_earned' => $pointsEarned,
-                        'submitted_at' => now(),
-                    ]
-                );
-            }
-            
-            QuizResult::updateOrCreate(
+            StudentAnswer::updateOrCreate(
                 [
                     'student_id' => $studentId,
                     'quizz_id' => $quiz->id,
+                    'question_id' => $question->id,
                 ],
                 [
-                    'score' => $earnedPoints,
-                    'total_points' => $totalPoints,
+                    'answer' => $userAnswer,
+                    'is_correct' => $isCorrect,
+                    'points_earned' => $pointsEarned,
                     'submitted_at' => now(),
                 ]
             );
-            
-            DB::commit();
-            
-            // إرجاع استجابة JSON لتتوافق مع طلبات الـ AJAX في الواجهة
-            return response()->json([
-                'icon' => 'success',
-                'title' => 'تم إنهاء الامتحان بنجاح',
-                'redirect_url' => route('quiz.result', $quiz->id)
-            ], 200);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'icon' => 'error',
-                'title' => 'حدث خطأ أثناء حفظ الإجابات: ' . $e->getMessage()
-            ], 500);
         }
+        
+        QuizResult::updateOrCreate(
+            [
+                'student_id' => $studentId,
+                'quizz_id' => $quiz->id,
+            ],
+            [
+                'score' => $earnedPoints,
+                'total_points' => $totalPoints,
+                'submitted_at' => now(),
+            ]
+        );
+        
+        DB::commit();
+        
+        return redirect()->route('quiz.result', $quiz->id);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->with('error', 'حدث خطأ أثناء حفظ الإجابات: ' . $e->getMessage());
     }
-//      public function submit(Request $request, $quizzId)
-// {
-//     // ✅ جلب الطالب المسجل حالياً
-//     $student = auth('student')->user()->actor;
-//     $studentId = $student->id;
-    
-//     $quiz = Quizz::with('questions')->findOrFail($quizzId);
-//     $answers = $request->input('answers', []);
-    
-//     DB::beginTransaction();
-//     try {
-//         $totalPoints = 0;
-//         $earnedPoints = 0;
-        
-//         foreach ($quiz->questions as $question) {
-//             $userAnswer = $answers[$question->id] ?? null;
-//             $isCorrect = ($userAnswer === $question->correct_answer);
-//             $pointsEarned = $isCorrect ? $question->points : 0;
-//             $totalPoints += $question->points;
-//             $earnedPoints += $pointsEarned;
-            
-//             StudentAnswer::updateOrCreate(
-//                 [
-//                     'student_id' => $studentId,
-//                     'quizz_id' => $quiz->id,
-//                     'question_id' => $question->id,
-//                 ],
-//                 [
-//                     'answer' => $userAnswer,
-//                     'is_correct' => $isCorrect,
-//                     'points_earned' => $pointsEarned,
-//                     'submitted_at' => now(),
-//                 ]
-//             );
-//         }
-        
-//         QuizResult::updateOrCreate(
-//             [
-//                 'student_id' => $studentId,
-//                 'quizz_id' => $quiz->id,
-//             ],
-//             [
-//                 'score' => $earnedPoints,
-//                 'total_points' => $totalPoints,
-//                 'submitted_at' => now(),
-//             ]
-//         );
-        
-//         DB::commit();
-        
-//         return redirect()->route('quiz.result', $quiz->id);
-//     } catch (\Exception $e) {
-//         DB::rollBack();
-//         return back()->with('error', 'حدث خطأ أثناء حفظ الإجابات: ' . $e->getMessage());
-//     }
-// }
+}
     // public function submit(Request $request, $quizzId)
     // {
     //     // استخدام معرف ثابت للتجربة
