@@ -1,15 +1,15 @@
 FROM richarvey/nginx-php-fpm:3.1.6
 
-# نسخ ملفات Composer أولاً للاستفادة من الكاش
-COPY composer.json composer.lock /var/www/html/
+# نسخ ملفات المشروع كاملة
+COPY . /var/www/html
+
+# تحميل وتثبيت Composer يدوياً للتأكد من توفره أثناء البناء
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /var/www/html
 
-# تثبيت الاعتماديات بدون تفاعلات
+# تثبيت الاعتماديات الخاصة بإنتاج لاراول
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# نسخ باقي ملفات المشروع
-COPY . /var/www/html
 
 ENV SKIP_COMPOSER=1
 ENV WEBROOT=/var/www/html/public
