@@ -104,8 +104,7 @@ if (auth('admin')->check()) {
     ));
 }
 
-        return redirect()->route('view.login');
-    }
+return redirect()->route('view.login', ['guard' => 'admin']);    }
 
     private function getWeeklyRegistrations()
     {
