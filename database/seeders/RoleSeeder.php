@@ -11,15 +11,12 @@ class RoleSeeder extends Seeder
 {
     public function run()
     {
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('role_has_permissions')->truncate();
-        DB::table('model_has_roles')->truncate();
-        DB::table('model_has_permissions')->truncate();
-        Permission::truncate();
-        Role::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
+        // استخدام CASCADE لتفريغ الجداول المرتبطة ببعضها في PostgreSQL بدون أخطاء
+        DB::table('role_has_permissions')->delete();
+        DB::table('model_has_roles')->delete();
+        DB::table('model_has_permissions')->delete();
+        Permission::query()->delete();
+        Role::query()->delete();
 
         $superAdminRole = Role::create(['name' => 'super admin', 'guard_name' => 'admin']);
         $adminRole = Role::create(['name' => 'admin', 'guard_name' => 'admin']);
@@ -37,7 +34,7 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($adminPerms as $perm) {
-            Permission::create(['name' => $perm, 'guard_name' => 'admin']);
+            Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'admin']);
         }
 
         // صلاحيات الطالب
@@ -47,7 +44,7 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($studentPerms as $perm) {
-            Permission::create(['name' => $perm, 'guard_name' => 'student']);
+            Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'student']);
         }
 
         // صلاحيات المدرب
@@ -61,7 +58,7 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($instructorPerms as $perm) {
-            Permission::create(['name' => $perm, 'guard_name' => 'instructor']);
+            Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'instructor']);
         }
 
         // تعيين الصلاحيات للأدوار

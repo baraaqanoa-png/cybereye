@@ -39,7 +39,7 @@ class AdminSeeder extends Seeder
                 'username' => $adminData['username'],
                 'email' => $adminData['email'],
                 'password' => Hash::make($adminData['password']),
-                'role' => 'Admin',
+                'role' => 'admin',
                 'actor_id' => $adminRecord->id,
                 'actor_type' => 'App\Models\Admin',
             ]);
